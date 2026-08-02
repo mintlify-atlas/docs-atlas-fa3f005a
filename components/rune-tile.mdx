@@ -1,0 +1,45 @@
+---
+title: "RuneTile: Skill Display Tile with Mastery Badge"
+sidebarTitle: "RuneTile"
+description: "RuneTile renders an individual skill as an interactive bordered tile — Sigil glyph, skill name, mastery badge, category, and description on hover."
+---
+
+RuneTile renders a single skill as a bordered interactive tile — showing a Sigil glyph, the skill name, a mastery level badge, and a category label. On hover, the tile scales up slightly, its border shifts to a neon color, and a glow shadow appears. Skills are grouped by category and rendered in a responsive grid on the Skills page.
+
+## Skill Object Props
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | `string` | Unique identifier used as the React key |
+| `name` | `string` | Display name shown on the tile (e.g. `"TypeScript"`) |
+| `category` | `string` | Grouping label — `Languages`, `Front-End`, `Back-End/Data`, `Debugging`, `Git/GitHub`, or `Design` |
+| `mastery` | `'Master' \| 'Adept'` | Proficiency tier — controls badge color |
+| `description` | `string` | One-line flavor text describing the skill |
+| `sigilId` | `string` | Sigil ID from `sigils.js` used to render the tile's glyph icon |
+
+## Usage
+
+```jsx
+import { RuneTile } from './components/skills/RuneTile.js';
+import { skills } from './data/skills.js';
+
+// Render all skills in a grid
+<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+  {skills.map(skill => (
+    <RuneTile key={skill.id} skill={skill} />
+  ))}
+</div>
+```
+
+## Mastery Levels
+
+| Level | Badge Color | Meaning |
+|---|---|---|
+| `Master` | Cyan | Highly proficient — used daily, comfortable with advanced patterns |
+| `Adept` | Purple | Comfortable and productive — solid working knowledge |
+
+## Tips
+
+<Tip>
+  Each skill entry references a `sigilId`. Use one of the `rune-1` through `rune-7` sigils for generic skill icons, or create a custom sigil path in `sigils.js` if you want a distinctive glyph for a specific technology.
+</Tip>

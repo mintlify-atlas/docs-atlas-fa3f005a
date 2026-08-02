@@ -1,47 +1,88 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with Sys.Witch V2"
+sidebarTitle: "Quickstart"
+description: "Clone, install, and run Sys.Witch V2 locally in minutes, then swap in your own content by editing the data files."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+This guide takes you from zero to a running development server and shows you exactly where to put your own content. You do not need to touch any component code for basic customization — all portfolio data lives in five plain JavaScript files.
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+  <Step title="Fork the repository">
+    Go to [https://github.com/apursley2012/sys.witch-v2](https://github.com/apursley2012/sys.witch-v2) and click **Fork** in the top-right corner. This creates a copy of the repo under your own GitHub account, which you will later use for GitHub Pages deployment.
+  </Step>
+
+  <Step title="Clone your fork">
+    Clone your fork to your local machine and move into the project directory:
 
     ```bash
-    npm install your-package
+    git clone https://github.com/<your-username>/sys.witch-v2.git
+    cd sys.witch-v2
     ```
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
 
-    ```bash
-    your-cli init
-    ```
+  <Step title="Install dependencies">
+    Install all project dependencies using your preferred package manager:
+
+    <CodeGroup>
+      ```bash npm
+      npm install
+      ```
+
+      ```bash yarn
+      yarn install
+      ```
+
+      ```bash pnpm
+      pnpm install
+      ```
+    </CodeGroup>
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+
+  <Step title="Start the dev server">
+    Launch the Vite development server:
 
     ```bash
-    your-cli start
+    npm run dev
     ```
+
+    Vite starts on **http://localhost:5173** by default. The server supports hot module replacement — any changes you save to data files or components will reflect instantly in the browser without a full reload.
+  </Step>
+
+  <Step title="Open the portfolio">
+    Visit [http://localhost:5173](http://localhost:5173) in your browser. You will land on the animated portal home screen. Use the navigation bar (or the full-screen mobile menu) to explore all seven sections:
+
+    - **Portal** — animated home with `PortalRing` sigil
+    - **Origin** — about / timeline
+    - **Conjured Works** — projects grid
+    - **Arcana** — skills by category
+    - **Tomes** — writing and articles
+    - **Ritual Reports** — case studies
+    - **Cast Message** — contact form and social links
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## Replace placeholder content
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+The `data/` directory is the only place you need to make changes for basic customization. Each file exports a plain JavaScript array — open it, edit the objects, save, and the UI updates immediately.
+
+| File | What it controls |
+|---|---|
+| `data/projects.js` | Projects section — title, description, tech stack, links, and the associated sigil ID |
+| `data/skills.js` | Skills section — skill name, category, proficiency level, and display color |
+| `data/writing.js` | Writing section — article titles, summaries, channel tags, and external URLs |
+| `data/caseStudies.js` | Case Studies section — in-depth case study documents with problem, process, and outcome fields |
+| `data/sigils.js` | SVG sigil path map keyed by sigil ID — advanced, only needed if you want to add new sigil shapes |
+
+<Tip>
+  All content data is plain JavaScript — no CMS, no database. Each file exports a simple array of objects you can edit directly.
 </Tip>
+
+## Build for production
+
+When you are ready to deploy, generate the static production bundle:
+
+```bash
+npm run build
+```
+
+Vite compiles and bundles the application into the `dist/` directory. The output is a fully static site — upload the contents of `dist/` to any static host, or push to your `gh-pages` branch to deploy via GitHub Pages.

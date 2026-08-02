@@ -1,0 +1,60 @@
+---
+title: "GlowFrame: Neon-Bordered Card Container"
+sidebarTitle: "GlowFrame"
+description: "GlowFrame is the primary card container in Sys.Witch V2, wrapping content in a neon-bordered panel with a matching color glow box-shadow effect."
+---
+
+GlowFrame is the primary card container for Sys.Witch V2. It wraps content in a bordered panel with a neon-colored border and matching box-shadow glow, providing the signature "glowing panel" aesthetic used throughout the site.
+
+## Props
+
+<ParamField path="color" type="'purple' | 'magenta' | 'cyan' | 'lime'">
+  Controls the border color, glow shadow color, and (when `animate=true`) pulse animation color. Defaults to `purple`.
+</ParamField>
+
+<ParamField path="animate" type="boolean">
+  When `true`, adds a continuous pulse-glow animation that slowly cycles the glow opacity. Used on the contact form for extra visual emphasis.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional Tailwind or CSS classes merged onto the root element. Use for custom dimensions, layout, or positioning.
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  Content rendered inside the card.
+</ParamField>
+
+## Usage
+
+```jsx
+import { GlowFrame } from './components/ui/GlowFrame.js';
+
+// Basic card
+<GlowFrame color="cyan">
+  <h3>Terminal Output</h3>
+  <p>Content inside a glowing cyan panel.</p>
+</GlowFrame>
+
+// Animated glow (used for contact form)
+<GlowFrame color="magenta" animate className="max-w-2xl mx-auto">
+  <SummoningForm />
+</GlowFrame>
+
+// Full-height flex column (ProjectPanel pattern)
+<GlowFrame color="magenta" className="h-full flex flex-col">
+  {/* ... */}
+</GlowFrame>
+```
+
+## Color Variants
+
+| Color | Border | Shadow Token |
+|---|---|---|
+| `purple` | `border-neon-purple` | `shadow-glow-purple` |
+| `magenta` | `border-neon-magenta` | `shadow-glow-magenta` |
+| `cyan` | `border-neon-cyan` | `shadow-glow-cyan` |
+| `lime` | `border-neon-lime` | `shadow-glow-lime` |
+
+<Tip>
+  GlowFrame uses `bg-surface-elevated` (`#12101c`) as its background by default, which sits one step above the page background. The `animate` prop is best reserved for focal elements — overusing it dilutes the visual impact.
+</Tip>

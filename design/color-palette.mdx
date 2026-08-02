@@ -1,0 +1,112 @@
+---
+title: "Sys.Witch V2 Color Palette and Neon Glow Tokens"
+sidebarTitle: "Color Palette"
+description: "A complete reference for Sys.Witch V2's CSS custom property color system — background layers, neon accents, text hierarchy, and glow shadow presets."
+---
+
+The entire color system is declared as CSS custom properties on `:root` in `assets/main.css`. Tokens are grouped into four categories: **background layers** (dark stacked surfaces), **neon accent colors** (the primary palette of vivid hues), **text hierarchy** (three semantic text shades), and **box-shadow glow presets** (pre-built multi-stop glows that match each neon). Tailwind utilities are generated from these same values so you can apply them directly in JSX.
+
+---
+
+## Background Layers
+
+Three dark surface tokens establish depth across the layout. Stacking them creates the illusion of elevation without using actual shadows on containers.
+
+| Token | Value | Usage |
+|---|---|---|
+| `--bg-base` | `#050508` | Root page background — the deepest layer |
+| `--bg-surface` | `#0a0a12` | Cards, panels, and raised containers |
+| `--bg-surface-elevated` | `#12101c` | Modals, tooltips, and top-level floating UI |
+
+---
+
+## Neon Accent Colors
+
+Five neon hues drive all interactive states, highlights, and decorative elements. Each has a full suite of Tailwind utilities (text, border, background, shadow).
+
+| Token | Hex | Tailwind class | Used for |
+|---|---|---|---|
+| `--neon-purple` | `#b026ff` | `text-neon-purple` / `border-neon-purple` / `bg-neon-purple` | Primary brand accent, headings, active nav |
+| `--neon-magenta` | `#ff00ff` | `text-neon-magenta` / `border-neon-magenta` / `bg-neon-magenta` | Hover states, trait badges, highlights |
+| `--neon-cyan` | `#00f3ff` | `text-neon-cyan` / `border-neon-cyan` / `bg-neon-cyan` | Secondary accent, code labels, skill icons |
+| `--neon-lime` | `#39ff14` | `text-neon-lime` / `border-neon-lime` / `bg-neon-lime` | Status indicators, success states, runes |
+| `--neon-deep-purple` | `#4a00e0` | `text-neon-deep-purple` / `border-neon-deep-purple` / `bg-neon-deep-purple` | Gradient bases, background gradients, overlays |
+
+---
+
+## Text Hierarchy
+
+Three semantic text tokens create a clear reading hierarchy across all components without introducing additional hues.
+
+| Token | Value | Purpose |
+|---|---|---|
+| `--text-primary` | `#e2e8f0` | Default body text, headings, and high-emphasis labels |
+| `--text-secondary` | `#94a3b8` | Supporting text, subtitles, and metadata |
+| `--text-muted` | `#475569` | Placeholder text, disabled states, decorative copy |
+
+---
+
+## Glow Shadows
+
+Each neon color ships with a matching `box-shadow` preset composed of two concentric glow stops. Apply them via CSS variables or the `shadow-glow-*` Tailwind utilities.
+
+| Token | CSS value | Tailwind class |
+|---|---|---|
+| `--glow-purple` | `0 0 10px rgba(176,38,255,.5)…` | `shadow-glow-purple` / `hover:shadow-glow-purple` |
+| `--glow-magenta` | `0 0 10px rgba(255,0,255,.5)…` | `shadow-glow-magenta` / `hover:shadow-glow-magenta` |
+| `--glow-cyan` | `0 0 10px rgba(0,243,255,.5)…` | `shadow-glow-cyan` / `hover:shadow-glow-cyan` |
+| `--glow-lime` | `0 0 10px rgba(57,255,20,.5)…` | `shadow-glow-lime` / `hover:shadow-glow-lime` |
+
+> Each `…` expands to a second stop at 20px spread and 0.3 opacity, e.g. `, 0 0 20px rgba(176,38,255,.3)`.
+
+---
+
+## Text Glow Utilities
+
+Text glow utilities apply a colored `text-shadow` directly to rendered type. They are ideal for headings, labels, and any copy that should appear to emit light.
+
+| Class | Effect |
+|---|---|
+| `text-glow-purple` | 8px purple text-shadow using the neon-purple value |
+| `text-glow-cyan` | 8px cyan text-shadow using the neon-cyan value |
+| `text-glow-magenta` | 8px magenta text-shadow using the neon-magenta value |
+| `text-glow-lime` | 8px lime text-shadow using the neon-lime value |
+
+---
+
+## Drop Shadow Utilities
+
+Drop shadow variants apply the glow through the CSS `filter: drop-shadow()` function, making them suitable for SVG elements, PNGs with transparency, and the `Sigil` component.
+
+| Class | Effect |
+|---|---|
+| `drop-shadow-glow-purple` | Filter-based purple glow — works on SVGs and transparent images |
+| `drop-shadow-glow-cyan` | Filter-based cyan glow |
+| `drop-shadow-glow-magenta` | Filter-based magenta glow |
+| `drop-shadow-glow-lime` | Filter-based lime glow |
+
+---
+
+## Using Tokens in CSS
+
+```css
+/* Using neon tokens in custom CSS */
+.my-element {
+  border-color: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+  color: var(--text-primary);
+  background-color: var(--bg-surface-elevated);
+}
+```
+
+## Using Tailwind Utilities in JSX
+
+```jsx
+<div className="border border-neon-cyan shadow-glow-cyan bg-surface-elevated">
+  <span className="text-neon-cyan text-glow-cyan font-mono">SIGNAL ACQUIRED</span>
+</div>
+```
+
+<Tip>
+  Each neon color has a matching set of utilities: `text-neon-*`, `border-neon-*`, `bg-neon-*`, `shadow-glow-*`, `hover:shadow-glow-*`, `text-glow-*`, `drop-shadow-glow-*`.
+</Tip>

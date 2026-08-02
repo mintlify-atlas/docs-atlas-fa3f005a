@@ -1,0 +1,50 @@
+---
+title: "PortalNav: Sticky Navigation Bar with Sigil Icons"
+sidebarTitle: "PortalNav"
+description: "PortalNav is the sticky top nav bar featuring Sigil icons, per-section neon colors, a mobile hamburger drawer, and active-route highlighting via NavLink."
+---
+
+PortalNav renders the site's sticky top navigation bar, featuring a Sigil icon and text label for each route. On mobile it collapses into a hamburger drawer; on desktop it expands to a horizontal flex row with backdrop blur. It sits at `z-50` with a `bg-surface/50 backdrop-blur-xl` background, keeping the nav readable over both the ParticleField and any page content that scrolls beneath it.
+
+## Navigation Items
+
+Each route in the template is represented by a nav item with its own Sigil glyph and neon accent color. The table below lists the full set of built-in items:
+
+| Route | Label | Sigil ID | Color |
+|---|---|---|---|
+| `/` | Home | `home` | cyan |
+| `/about` | About | `about` | purple |
+| `/projects` | Projects | `projects` | magenta |
+| `/skills` | Skills | `skills` | lime |
+| `/writing` | Writing | `writing` | cyan |
+| `/casestudies` | Tomes | `case-studies` | purple |
+| `/contact` | Contact | `contact` | magenta |
+
+## Active State
+
+PortalNav uses React Router's `<NavLink>` component for each route. NavLink automatically applies an `active` class to the link that matches the current route. Sys.Witch V2's styles use this class to trigger the neon highlight — the label and Sigil glow in the item's assigned color when the route is active, providing clear visual feedback about the current location.
+
+## Mobile Behavior
+
+On small screens, the horizontal nav row is hidden and replaced with a hamburger menu button. Tapping the button toggles a drawer that slides down from the top using a CSS `translate-y` transition (`translate-y-0` when open, `translate-y-full` when closed). Inside the drawer, each nav item renders as a full-width row with the Sigil icon on the left and the label text on the right, making tap targets comfortable on touch devices.
+
+## Customizing Nav Items
+
+To add or remove a route from the navigation, edit the `navItems` array inside `PortalNav.js`:
+
+```jsx
+// Inside PortalNav.js — add a new nav item to the navItems array
+const navItems = [
+  { path: '/', label: 'HOME', sigilId: 'home', color: 'cyan' },
+  { path: '/about', label: 'ABOUT', sigilId: 'about', color: 'purple' },
+  // Add your new route:
+  { path: '/gallery', label: 'GALLERY', sigilId: 'rune-5', color: 'lime' },
+  // ...
+];
+```
+
+Remember to also add the corresponding route to your React Router config in `main.jsx` (or wherever your router is defined), and create the page component it points to.
+
+<Tip>
+  Pick a `sigilId` from the 18 available glyphs in `data/sigils.js`. Assign a color (`purple`, `magenta`, `cyan`, `lime`) that complements the existing palette without clashing with adjacent nav items.
+</Tip>

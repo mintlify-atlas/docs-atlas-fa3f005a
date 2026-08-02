@@ -1,0 +1,70 @@
+---
+title: "Writing Data Schema and Blog Entry Format"
+sidebarTitle: "Writing"
+description: "Reference for data/writing.js — covers the full field schema, channel label conventions, and how to add your own blog posts and articles."
+---
+
+The writing data file exports an array of articles, blog posts, and reflections displayed on the Writing page as **TomeCard** entries. Replace the placeholder entries with your own published writing.
+
+## Schema
+
+Each object in the exported `a` array accepts the following fields:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | `string` | Yes | Unique key used internally for React list rendering |
+| `title` | `string` | Yes | Full post title displayed as the TomeCard heading |
+| `excerpt` | `string` | Yes | 1–2 sentence summary shown beneath the title |
+| `date` | `string` (`YYYY-MM-DD`) | Yes | Publication date rendered on the card |
+| `channel` | `string` | Yes | Category label displayed as a badge on the TomeCard |
+| `url` | `string` | Yes | Link to the full post — used for the card's read action |
+
+## Channel Labels
+
+Channels are free-form strings that categorize your writing. The placeholder data uses these five:
+
+| Channel | Intended Content |
+|---|---|
+| `Technical` | Code deep-dives, how-to guides, and explainers for developers |
+| `Reflections` | Career journey, personal growth, and non-technical essays |
+| `Bug Reports` | Post-mortems, debugging stories, and lessons learned |
+| `Project Writeups` | Architecture decisions, build logs, and trade-off analyses |
+| `General Audience` | Accessible explainers written for non-developer readers |
+
+<Note>
+  `channel` is a free-form string — define your own category names to match your writing focus. There is no fixed enum.
+</Note>
+
+## Placeholder Entries
+
+The template ships with five placeholder posts demonstrating a range of channels:
+
+| Title | Channel | Date |
+|---|---|---|
+| Banishing Memory Leaks in React Applications | Technical | 2025-10-31 |
+| From Retail to React: A Non-Linear Path | Reflections | 2025-09-15 |
+| The Great Z-Index War of 2025 | Bug Reports | 2025-08-22 |
+| Building the Void Tracker | Project Writeups | 2025-07-10 |
+| Demystifying the Event Loop | General Audience | 2025-06-05 |
+
+## Example Entry
+
+```js
+// data/writing.js
+export const writing = [
+  {
+    id: '1',
+    title: 'Banishing Memory Leaks in React Applications',
+    excerpt:
+      'A deep dive into common useEffect pitfalls that lead to memory leaks, and how to properly cleanse your component lifecycle.',
+    date: '2025-10-31',
+    channel: 'Technical',
+    url: 'https://your-blog.com/react-memory-leaks',
+  },
+  // ...
+];
+```
+
+<Tip>
+  Sort entries newest-first — they render in array order. The `date` field is display-only; no sorting logic runs automatically.
+</Tip>

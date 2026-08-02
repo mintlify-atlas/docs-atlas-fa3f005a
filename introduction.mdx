@@ -1,0 +1,47 @@
+---
+title: "Sys.Witch V2: Cyber-Occult Portfolio Template"
+sidebarTitle: "Introduction"
+description: "Sys.Witch V2 is a React SPA portfolio template with a dark cyber-occult aesthetic, deployable to GitHub Pages with zero backend required."
+---
+
+Sys.Witch V2 is a single-page application portfolio template built with React 18 and React Router v6, styled through a dark cyber-occult design language of neon glows, animated sigils, and particle fields. It is deployable as a fully static site to GitHub Pages — no server, no CMS, no database. All content lives in plain JavaScript data files you edit directly.
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Fork the repo, install dependencies, and have a live dev server running in under five minutes.
+  </Card>
+  <Card title="Project Structure" icon="folder-tree" href="/project-structure">
+    Understand how components, data files, and HTML shells are organized at the root level.
+  </Card>
+  <Card title="Design System" icon="palette" href="/design/color-palette">
+    Explore the neon color tokens, typography stack, and glow utilities that define the aesthetic.
+  </Card>
+  <Card title="Components" icon="puzzle-piece" href="/components/layout">
+    Browse the Layout, PortalNav, ParticleField, Sigil, and all other reusable UI components.
+  </Card>
+</CardGroup>
+
+## Key Features
+
+- **Animated Canvas particle field** — a continuous background of drifting particles rendered on an HTML5 `<canvas>` via `ParticleField.js`, giving every page a living, electric atmosphere
+- **SVG sigil system** — a data-driven sigil renderer (`Sigil.js`) that maps string IDs to SVG path data, used as iconography throughout navigation, section headers, and decorative elements
+- **Neon glow effects** — four accent colors (purple `#b026ff`, magenta `#ff00ff`, cyan `#00f3ff`, lime `#39ff14`) applied as Tailwind utility classes with matching CSS `text-shadow` and `box-shadow` glow variants
+- **Framer Motion page transitions and scroll animations** — `AnimatePresence` wraps every route change with a blur-and-scale entrance/exit; individual components animate in on mount with staggered delays
+- **React Router v6 SPA** — client-side routing across seven sections (Portal, Origin, Conjured Works, Arcana, Tomes, Ritual Reports, Cast Message) with a persistent `PortalNav` and `Layout` shell
+- **Data-driven content model** — all portfolio content (projects, skills, writing entries, case studies, sigil paths) lives in five files under `data/`; no component changes required for routine content updates
+- **Responsive Tailwind layout** — mobile-first grid and flex layouts with a collapsible full-screen hamburger nav on small viewports and a fixed top bar on `md` and above
+
+## Tech Stack
+
+| Technology | Purpose | Package |
+|---|---|---|
+| React 18 | UI rendering and component model | `react` / `react-dom` |
+| React Router v6 | Client-side SPA routing | `react-router-dom` |
+| Framer Motion | Page transitions and scroll animations | `framer-motion` |
+| Tailwind CSS | Utility-first styling and responsive layout | `tailwindcss` |
+| Lucide React | SVG icon set (GitHub, LinkedIn, Mail, Menu, X) | `lucide-react` |
+| Vite | Development server and production build tool | `vite` |
+
+<Note>
+  This template is intentionally opinionated — its dark cyber-occult aesthetic is the whole point. Customization guidance is in the Customization section.
+</Note>

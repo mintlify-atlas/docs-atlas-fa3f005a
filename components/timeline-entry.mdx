@@ -1,0 +1,55 @@
+---
+title: "TimelineEntry: Animated Background Timeline Row"
+sidebarTitle: "TimelineEntry"
+description: "TimelineEntry renders an animated timeline row for the About page — year marker, heading, and description with a scroll-triggered neon-cyan slide animation."
+---
+
+TimelineEntry renders a single row in the About page's background timeline — a year marker, heading, and description arranged in a vertical timeline layout with an animated neon-cyan connector line. Each entry slides into view from the right as the user scrolls it into the viewport, and the entries animate independently of one another.
+
+## Props
+
+<ParamField path="year" type="string" required>
+  The year label displayed in `font-mono` with `text-neon-cyan` styling above the entry title.
+</ParamField>
+
+<ParamField path="title" type="string" required>
+  The entry heading rendered in `font-display` — the name or short label for this timeline event.
+</ParamField>
+
+<ParamField path="description" type="string" required>
+  The prose description of the timeline entry, rendered in `font-sans` with `text-text-secondary` styling.
+</ParamField>
+
+<ParamField path="isLast" type="boolean" default="false">
+  When `true`, omits the vertical neon-cyan gradient connector line beneath the entry's Sigil icon. Set this on the final entry in the list so the line does not extend beyond the last item.
+</ParamField>
+
+## Animation
+
+Each TimelineEntry uses Framer Motion's `whileInView` to slide from `x: 20` to `x: 0` once the entry crosses the viewport threshold. The viewport is configured with `once: true` (animates only on first appearance) and a `-100px` margin offset so the animation triggers slightly before the entry fully enters the screen. Entries animate independently — they are not staggered.
+
+## Usage
+
+```jsx
+import { TimelineEntry } from './components/about/TimelineEntry.js';
+
+const timelineData = [
+  { year: '2020', title: 'Started Learning Web Dev', description: 'Began with HTML/CSS fundamentals...' },
+  { year: '2021', title: 'First React Project', description: 'Built a task management app...' },
+  { year: '2023', title: 'Current', description: 'Frontend developer focused on...', isLast: true },
+];
+
+{timelineData.map((entry, i) => (
+  <TimelineEntry
+    key={entry.year}
+    year={entry.year}
+    title={entry.title}
+    description={entry.description}
+    isLast={i === timelineData.length - 1}
+  />
+))}
+```
+
+<Note>
+  TimelineEntry is not data-driven from an external data file — it is rendered directly in the About page component. Edit the page component to change, add, or remove timeline entries.
+</Note>

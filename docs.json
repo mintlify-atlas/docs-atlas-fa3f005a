@@ -1,72 +1,101 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Sys.Witch V2",
+  "theme": "willow",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
-  },
-  "favicon": "/favicon.svg",
-  "navigation": {
-    "pages": [
-      {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "primary": "#b026ff",
+    "dark": "#050508"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
     "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "type": "github",
+      "href": "https://github.com/apursley2012/sys.witch-v2"
     }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/apursley2012/sys.witch-v2"
     }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Overview",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "project-structure"
+            ]
+          },
+          {
+            "group": "Design System",
+            "pages": [
+              "design/color-palette",
+              "design/typography",
+              "design/sigils-and-runes"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Components",
+        "groups": [
+          {
+            "group": "Layout",
+            "pages": [
+              "components/layout",
+              "components/portal-nav",
+              "components/particle-field",
+              "components/rune-divider"
+            ]
+          },
+          {
+            "group": "UI Primitives",
+            "pages": [
+              "components/glow-frame",
+              "components/glyph-button",
+              "components/sigil"
+            ]
+          },
+          {
+            "group": "Section Components",
+            "pages": [
+              "components/project-panel",
+              "components/summoning-circle",
+              "components/rune-tile",
+              "components/timeline-entry",
+              "components/tome-card",
+              "components/ritual-report",
+              "components/summoning-form"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Data & Content",
+        "groups": [
+          {
+            "group": "Content Schemas",
+            "pages": [
+              "data/projects",
+              "data/skills",
+              "data/writing",
+              "data/case-studies"
+            ]
+          },
+          {
+            "group": "Customization",
+            "pages": [
+              "customization/theming",
+              "customization/adding-content",
+              "customization/deployment"
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

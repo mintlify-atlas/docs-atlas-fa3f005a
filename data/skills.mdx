@@ -1,0 +1,98 @@
+---
+title: "Skills Data Schema and Technology Categories"
+sidebarTitle: "Skills"
+description: "Reference for data/skills.js — covers the full field schema, available mastery levels, category groupings, and how to customize your skill set."
+---
+
+The skills data file powers the Skills section of the portfolio. Each entry in the exported `s` array renders as a **RuneTile** — a card composed of a Sigil icon, a mastery badge, the skill name, and a short line of flavor text.
+
+## Schema
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | `string` | Yes | Unique key used internally for React list rendering |
+| `name` | `string` | Yes | Display name shown on the RuneTile |
+| `category` | `string` | Yes | Grouping label — tiles are clustered by this value on the Skills page |
+| `mastery` | `'Master'` \| `'Adept'` | Yes | Proficiency level — controls badge color and label |
+| `description` | `string` | Yes | One-line thematic flavor text shown beneath the skill name |
+| `sigilId` | `string` | Yes | References a sigil defined in `data/sigils.js` — determines the glyph rendered on the tile |
+
+## Categories
+
+Categories are free-form strings — the skills page groups tiles by matching `category` values. The placeholder data uses these six:
+
+| Category | Contents in Placeholder Data |
+|---|---|
+| `Languages` | TypeScript, JavaScript, Python |
+| `Front-End` | React, Tailwind CSS, Framer Motion |
+| `Back-End/Data` | Node.js, SQL |
+| `Debugging` | Chrome DevTools, Jest / Vitest |
+| `Git/GitHub` | Git |
+| `Design` | Figma |
+
+You can rename, merge, split, or add categories freely — just keep the strings consistent across entries you want grouped together.
+
+## Mastery Levels
+
+The `mastery` field accepts exactly two values:
+
+| Value | Meaning | Badge Color |
+|---|---|---|
+| `Master` | Deep expertise — technologies you reach for first | Cyan |
+| `Adept` | Comfortable proficiency — technologies you work with confidently | Purple |
+
+## Placeholder Skills
+
+All twelve entries included in the template:
+
+| Name | Category | Mastery |
+|---|---|---|
+| TypeScript | Languages | Master |
+| JavaScript | Languages | Master |
+| Python | Languages | Adept |
+| React | Front-End | Master |
+| Tailwind CSS | Front-End | Master |
+| Framer Motion | Front-End | Adept |
+| Node.js | Back-End/Data | Adept |
+| SQL | Back-End/Data | Adept |
+| Chrome DevTools | Debugging | Master |
+| Jest / Vitest | Debugging | Adept |
+| Git | Git/GitHub | Master |
+| Figma | Design | Adept |
+
+## Full Placeholder Array
+
+```js
+// data/skills.js
+export const skills = [
+  { id: 'ts', name: 'TypeScript', category: 'Languages', mastery: 'Master',
+    description: 'Strict typing rituals to banish runtime errors.', sigilId: 'rune-1' },
+  { id: 'js', name: 'JavaScript', category: 'Languages', mastery: 'Master',
+    description: 'The chaotic ancient tongue of the web.', sigilId: 'rune-2' },
+  { id: 'python', name: 'Python', category: 'Languages', mastery: 'Adept',
+    description: 'Serpentine scripts for automation and data binding.', sigilId: 'rune-3' },
+  { id: 'react', name: 'React', category: 'Front-End', mastery: 'Master',
+    description: 'Component conjuration and state alchemy.', sigilId: 'rune-4' },
+  { id: 'tailwind', name: 'Tailwind CSS', category: 'Front-End', mastery: 'Master',
+    description: 'Utility-first styling incantations.', sigilId: 'rune-5' },
+  { id: 'framer', name: 'Framer Motion', category: 'Front-End', mastery: 'Adept',
+    description: 'Breathing life into static DOM elements.', sigilId: 'rune-6' },
+  { id: 'node', name: 'Node.js', category: 'Back-End/Data', mastery: 'Adept',
+    description: 'Server-side runtime environments.', sigilId: 'rune-7' },
+  { id: 'sql', name: 'SQL', category: 'Back-End/Data', mastery: 'Adept',
+    description: 'Relational data extraction and manipulation.', sigilId: 'rune-1' },
+  { id: 'debug', name: 'Chrome DevTools', category: 'Debugging', mastery: 'Master',
+    description: 'Peering into the void to find the source of bugs.', sigilId: 'rune-2' },
+  { id: 'jest', name: 'Jest / Vitest', category: 'Debugging', mastery: 'Adept',
+    description: 'Automated wards against regressions.', sigilId: 'rune-3' },
+  { id: 'git', name: 'Git', category: 'Git/GitHub', mastery: 'Master',
+    description: 'Timeline manipulation and alternate reality branching.', sigilId: 'rune-4' },
+  { id: 'figma', name: 'Figma', category: 'Design', mastery: 'Adept',
+    description: 'Vector manipulation and interface pre-visualization.', sigilId: 'rune-5' },
+  // ... add your skills
+];
+```
+
+<Tip>
+  The `description` field is intentionally short (5–10 words) to fit within the RuneTile. Lean into the occult metaphor or keep it factual — both work.
+</Tip>

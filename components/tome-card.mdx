@@ -1,0 +1,45 @@
+---
+title: "TomeCard: Writing Entry Card Component"
+sidebarTitle: "TomeCard"
+description: "TomeCard renders a single writing entry as a card — post title, excerpt, formatted publication date, and a channel/category badge with an outbound link."
+---
+
+TomeCard renders a single writing entry as a card — showing the post title, excerpt, formatted publication date, and a channel/category badge. All entries link out to the full post via the `url` field. The date and channel label are rendered in `font-mono`, while the excerpt uses `font-sans` for readability.
+
+## Writing Entry Object
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | `string` | Unique identifier used as the React key |
+| `title` | `string` | Display title of the post |
+| `excerpt` | `string` | One-sentence summary shown in the card body |
+| `date` | `string` | Publication date in `YYYY-MM-DD` format |
+| `channel` | `string` | Category label — see Channel Values below |
+| `url` | `string` | Link to the full post (external URL or `#` for placeholder) |
+
+## Channel Values
+
+| Channel | Typical Use |
+|---|---|
+| `Technical` | Deep dives, code walkthroughs, and implementation guides |
+| `Reflections` | Career retrospectives and personal growth posts |
+| `Bug Reports` | Post-mortems, debugging stories, and root cause analyses |
+| `Project Writeups` | Architecture overviews and build logs |
+| `General Audience` | Accessible explainers written for non-technical readers |
+
+## Usage
+
+```jsx
+import { TomeCard } from './components/writing/TomeCard.js';
+import { writing } from './data/writing.js';
+
+<div className="space-y-6">
+  {writing.map(entry => (
+    <TomeCard key={entry.id} entry={entry} />
+  ))}
+</div>
+```
+
+<Tip>
+  The `url` field accepts any URL. Point it to your actual blog posts on dev.to, Medium, a personal site, or any other platform. Use `"#"` as a placeholder while drafts are still in progress.
+</Tip>

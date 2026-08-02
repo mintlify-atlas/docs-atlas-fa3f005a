@@ -1,0 +1,53 @@
+---
+title: "RitualReport: Case Study Document Renderer"
+sidebarTitle: "RitualReport"
+description: "RitualReport renders a full structured case study document — title, Sigil, and named sections as heading/prose blocks following the Ritual Report format."
+---
+
+RitualReport renders a full case study document from a structured data object. It displays the case study title, a thematic Sigil, and then each named section as a heading + prose block — following the Ritual Report format used throughout the portfolio. Section headings are rendered in `font-display` with neon colors; section content uses `font-sans` for extended readability.
+
+## Case Study Object
+
+```js
+{
+  id: string,
+  title: string,            // e.g. 'RITUAL REPORT: NEXUS DASHBOARD REBUILD'
+  sigilId: string,          // Sigil ID for the header decoration
+  sections: [
+    {
+      heading: string,      // e.g. 'Problem', 'Goal', 'Process'
+      content: string,      // Full prose paragraph
+    }
+  ]
+}
+```
+
+## Standard Section Headings
+
+These eight headings make up the recommended full Ritual Report structure. Include them in the order shown — the `sections` array is rendered sequentially:
+
+| Heading | Purpose |
+|---|---|
+| `Problem` | Describe what was broken, missing, or suboptimal before the project |
+| `Goal` | State the desired outcome or north-star metric |
+| `Process` | Summarize the research, exploration, or investigation approach |
+| `Design Decisions` | Explain UX and visual choices made and the reasoning behind them |
+| `Dev Decisions` | Detail technical implementation choices — stack, architecture, trade-offs |
+| `Testing & Debugging` | Document notable bugs found, diagnosed, and resolved |
+| `Result` | Report measurable or observable outcomes |
+| `Skills Demonstrated` | Comma-separated list of technologies and competencies applied |
+
+## Usage
+
+```jsx
+import { RitualReport } from './components/case/RitualReport.js';
+import { caseStudies } from './data/caseStudies.js';
+
+{caseStudies.map(study => (
+  <RitualReport key={study.id} study={study} />
+))}
+```
+
+<Info>
+  You do not need to use all eight standard sections. The `sections` array is rendered in order, so include only the headings that are relevant to your case study. A minimal entry might only have `Problem`, `Process`, and `Result`.
+</Info>

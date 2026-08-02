@@ -1,0 +1,44 @@
+---
+title: "SummoningCircle: Interactive Project Selector"
+sidebarTitle: "SummoningCircle"
+description: "SummoningCircle is the interactive project list selector that drives ProjectPanel — clicking an item lifts state and updates the detail view."
+---
+
+SummoningCircle is the interactive project list component on the Projects page. It displays all projects as selectable items — each showing the project title alongside a Sigil rune. Clicking an item selects it and updates the adjacent ProjectPanel with the full project details. Selection state is lifted to the parent component so both pieces stay in sync.
+
+## Usage
+
+SummoningCircle lifts selected state to a parent component. Pass the currently selected project's `id` as `selectedId` and wire `onSelect` to your state setter:
+
+```jsx
+import { SummoningCircle } from './components/projects/SummoningCircle.js';
+import { projects } from './data/projects.js';
+
+function ProjectsPage() {
+  const [selected, setSelected] = useState(projects[0]);
+
+  return (
+    <div className="flex flex-col lg:flex-row gap-12">
+      <SummoningCircle
+        projects={projects}
+        selectedId={selected?.id}
+        onSelect={setSelected}
+      />
+      <ProjectPanel project={selected} />
+    </div>
+  );
+}
+```
+
+## Interaction
+
+Each project item in the list has two interactive states:
+
+- **Hover** — A neon highlight appears when the cursor enters the item, giving visual feedback before selection.
+- **Selected** — The currently active item holds a persistent neon highlight. This state is driven by the `selectedId` prop, so it stays in sync even if selection is changed programmatically.
+
+Clicking any item fires `onSelect` with the full project object, which the parent uses to update both `selectedId` (for SummoningCircle's highlight) and the `project` prop on ProjectPanel (for the detail view).
+
+<Tip>
+  The first project in the data array is typically pre-selected on page load to avoid showing the empty ProjectPanel placeholder state on initial render. Pass `projects[0]` as the initial value to your `useState` call.
+</Tip>

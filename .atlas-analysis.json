@@ -1,0 +1,127 @@
+{
+  "projectType": "frontend",
+  "projectName": "Sys.Witch V2",
+  "projectDescription": "A cyber-occult portfolio template built with React, featuring a dark neon aesthetic, animated particle fields, SVG sigils, and thematic components for showcasing projects, skills, writing, and case studies.",
+  "theme": "willow",
+  "primaryColor": "#b026ff",
+  "lightColor": null,
+  "darkColor": "#050508",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Overview",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "project-structure"
+            ]
+          },
+          {
+            "group": "Design System",
+            "pages": [
+              "design/color-palette",
+              "design/typography",
+              "design/sigils-and-runes"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Components",
+        "groups": [
+          {
+            "group": "Layout",
+            "pages": [
+              "components/layout",
+              "components/portal-nav",
+              "components/particle-field",
+              "components/rune-divider"
+            ]
+          },
+          {
+            "group": "UI Primitives",
+            "pages": [
+              "components/glow-frame",
+              "components/glyph-button",
+              "components/sigil"
+            ]
+          },
+          {
+            "group": "Section Components",
+            "pages": [
+              "components/project-panel",
+              "components/summoning-circle",
+              "components/rune-tile",
+              "components/timeline-entry",
+              "components/tome-card",
+              "components/ritual-report",
+              "components/summoning-form"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Data & Content",
+        "groups": [
+          {
+            "group": "Content Schemas",
+            "pages": [
+              "data/projects",
+              "data/skills",
+              "data/writing",
+              "data/case-studies"
+            ]
+          },
+          {
+            "group": "Customization",
+            "pages": [
+              "customization/theming",
+              "customization/adding-content",
+              "customization/deployment"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Animated particle field background using Canvas API with neon purple, cyan, and magenta particles",
+    "SVG sigil system with 18+ hand-crafted geometric glyphs used for navigation and decoration",
+    "Cyber-occult design language with neon glow effects (purple, magenta, cyan, lime) and dark base colors",
+    "React + React Router v6 SPA with Framer Motion page transitions and scroll-triggered animations",
+    "Responsive layout with Tailwind CSS utility classes and custom CSS variables",
+    "SummoningCircle interactive project selector with ProjectPanel detail view",
+    "Timeline-based about/background section with animated entries",
+    "TraitSigilGrid for personality traits with hover animations",
+    "RuneTile skill display grid with mastery levels and categorical grouping",
+    "TomeCard writing log with channel categorization",
+    "RitualReport case study deep-dive format with structured sections",
+    "SummoningForm contact form with animated submission state",
+    "JetBrains Mono for code/label text and Tektur display font for headings"
+  ],
+  "publicApiSurface": [
+    "Sigil({ id, size, color, className }) — renders an SVG sigil by ID from the sigils data map",
+    "GlowFrame({ color, animate, className, children }) — bordered card with neon glow shadow",
+    "GlyphButton({ color, variant, fullWidth, type, disabled, onClick, children }) — styled button with glyph aesthetic",
+    "PortalNav — sticky top navigation bar with sigil icons and mobile drawer",
+    "ParticleField — fullscreen canvas particle animation, respects prefers-reduced-motion",
+    "RuneDivider — decorative horizontal rule with a centered sigil",
+    "Layout — root wrapper providing ParticleField, PortalNav, AnimatePresence, and footer",
+    "TimelineEntry({ year, title, description, isLast }) — animated timeline row",
+    "TraitSigilGrid — grid of five personality trait sigil tiles",
+    "SummoningCircle — interactive project selector list",
+    "ProjectPanel({ project }) — animated project detail panel",
+    "RuneTile({ skill }) — single skill tile with mastery badge",
+    "TomeCard({ entry }) — writing entry card with date and channel",
+    "RitualReport({ study }) — full case study report renderer",
+    "SummoningForm — contact form with animated send confirmation",
+    "projects[] — array of project objects (id, title, description, tags, image, demoUrl, sourceUrl, bindingNotes)",
+    "skills[] — array of skill objects (id, name, category, mastery, description, sigilId)",
+    "writing[] — array of writing entry objects (id, title, excerpt, date, channel, url)",
+    "caseStudies[] — array of case study objects (id, title, sigilId, sections[])",
+    "sigils{} — map of sigil ID → SVG path string"
+  ]
+}

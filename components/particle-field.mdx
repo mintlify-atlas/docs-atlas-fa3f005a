@@ -1,0 +1,75 @@
+---
+title: "ParticleField: Animated Canvas Background"
+sidebarTitle: "ParticleField"
+description: "ParticleField is a fullscreen Canvas animation of neon particles drifting upward, with responsive particle counts, reduced-motion support, and automatic cleanup."
+---
+
+ParticleField renders a fullscreen `<canvas>` element pinned behind all page content. It continuously animates neon-colored particles drifting upward, creating the cyber-occult atmosphere that defines the site's visual identity. The canvas is fixed to the viewport with `inset-0`, sits at `z-0`, and carries `opacity-60` to keep the particles atmospheric rather than distracting.
+
+## Technical Details
+
+| Property | Value |
+|---|---|
+| Position | `fixed inset-0` |
+| Z-index | `z-0` (behind all content) |
+| Pointer events | `none` (never intercepts clicks) |
+| Opacity | `0.6` |
+| Accessibility | `aria-hidden="true"` |
+| Particle count | `Math.min(Math.floor(window.innerWidth / 20), 80)` — responsive, capped at 80 |
+| Animation loop | `requestAnimationFrame` — clears and redraws the full canvas every frame |
+| Resize handling | Reinitializes particle positions and count on `window` resize |
+
+**Particle properties:**
+
+- **Colors:** neon purple `rgba(176, 38, 255)`, cyan `rgba(0, 243, 255)`, magenta `rgba(255, 0, 255)` — each particle is randomly assigned one color
+- **Size:** `0.5–2.5px` radius circles
+- **Opacity:** `0.1–0.6` per particle, assigned at creation
+- **Vertical motion (`speedY`):** `-0.1` to `-0.5` — all particles drift upward at varying speeds
+- **Horizontal motion (`speedX`):** `-0.2` to `+0.2` — a slight random sideways drift per particle
+
+## Accessibility
+
+ParticleField checks `window.matchMedia('(prefers-reduced-motion: reduce)')` on mount. If the user has enabled the reduced-motion preference in their OS or browser, the animation loop is skipped entirely — the canvas remains in the DOM (so layout is unaffected) but no particles are drawn or animated. This ensures the component does not cause discomfort for users sensitive to motion.
+
+The canvas element itself carries `aria-hidden="true"`, so screen readers skip it entirely and it contributes nothing to the accessibility tree.
+
+## Performance Notes
+
+- The particle count cap of 80 prevents performance degradation on wide displays. Without the cap, a 2560px-wide screen would spawn 128 particles, which is noticeable on integrated graphics.
+- Canvas 2D rendering is significantly faster than equivalent CSS or SVG animations for this many independently moving elements — there is no DOM node per particle, only pixel operations.
+- On unmount, ParticleField cancels the active `requestAnimationFrame` loop and removes the `resize` event listener, preventing memory leaks when navigating between routes.
+
+<Info>
+  ParticleField is already included in the Layout component. You do not need to add it to individual pages.
+</Info>
+
+## Modifying Particle Behavior
+
+The quickest way to change the feel of the animation is to adjust the values in the `Particle` constructor. The snippet below shows the full constructor with inline notes on what each value controls:
+
+```js
+// Inside components/layout/ParticleField.js
+// Particle constructor — tune these values to change the animation character
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;       // Radius in px: 0.5–2.5
+    this.speedY = Math.random() * -0.5 - 0.1;  // Upward drift speed
+    this.speedX = Math.random() * 0.4 - 0.2;   // Horizontal drift: -0.2 to +0.2
+    this.opacity = Math.random() * 0.5 + 0.1;  // Opacity: 0.1–0.6
+    const colors = [
+      'rgba(176, 38, 255, OPACITY)',   // --neon-purple
+      'rgba(0, 243, 255, OPACITY)',    // --neon-cyan
+      'rgba(255, 0, 255, OPACITY)',    // --neon-magenta
+    ];
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+  }
+}
+```
+
+To make particles slower and larger, increase the `size` multiplier and reduce the absolute values of `speedY`. To shift the color palette, swap the `rgba` values for colors defined in your `tailwind.config.js` theme.
+
+<Warning>
+  Do not increase the particle cap significantly — rendering 200+ particles per frame can cause jank on mid-range devices.
+</Warning>

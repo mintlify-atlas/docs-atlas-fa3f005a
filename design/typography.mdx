@@ -1,0 +1,90 @@
+---
+title: "Typography System: Fonts and Text Utilities"
+sidebarTitle: "Typography"
+description: "Reference for Sys.Witch V2's three-font system — Tektur display headings, Inter body prose, and JetBrains Mono technical labels — plus size and spacing utilities."
+---
+
+Sys.Witch V2 uses a deliberately stratified three-font system. **Tektur** (`font-display`) handles all display headings, navigation labels, and feature titles — its angular, wide-tracked letterforms reinforce the cyber-occult aesthetic. **Inter** (`font-sans`) is used for all body copy and descriptive prose where readability takes priority. **JetBrains Mono** (`font-mono`) covers code labels, timestamps, form field labels, and any technical identifier that benefits from fixed-width alignment. All three families are loaded from Google Fonts via `@import` in `assets/main.css`.
+
+---
+
+## Font Families
+
+| Font | Tailwind class | CSS family | Weights | Typical use |
+|---|---|---|---|---|
+| Tektur | `font-display` | `Tektur, cursive` | 400–900 | Section headings, nav labels, feature titles |
+| Inter | `font-sans` | `Inter, sans-serif` | 300–700 | Body text, descriptions, prose |
+| JetBrains Mono | `font-mono` | `JetBrains Mono, monospace` | 400–700 | Code labels, timestamps, technical identifiers, form labels |
+
+### Usage Examples
+
+```jsx
+// Display heading
+<h1 className="font-display text-4xl text-neon-purple text-glow-purple">
+  SYS.WITCH
+</h1>
+
+// Body prose
+<p className="font-sans text-text-secondary leading-relaxed">
+  Description text uses Inter for readability.
+</p>
+
+// Monospace label
+<span className="font-mono text-xs text-neon-cyan uppercase tracking-widest">
+  SIGNAL ACQUIRED
+</span>
+```
+
+---
+
+## Text Size Scale
+
+The following Tailwind text-size classes appear throughout the project. Pair them with the appropriate font family class for consistent hierarchy.
+
+| Class | Size | Typical use |
+|---|---|---|
+| `text-xs` | 0.75rem / 12px | Meta labels, timestamps, badge text |
+| `text-sm` | 0.875rem / 14px | Supporting body copy, secondary descriptions |
+| `text-base` | 1rem / 16px | Default body text, card descriptions |
+| `text-lg` | 1.125rem / 18px | Emphasis prose, lead paragraphs |
+| `text-xl` | 1.25rem / 20px | Subsection headings, card titles |
+| `text-2xl` | 1.5rem / 24px | Section sub-headings, sidebar labels |
+| `text-3xl` | 1.875rem / 30px | Section titles, prominent feature headings |
+| `text-4xl` | 2.25rem / 36px | Hero headings, primary display text |
+
+---
+
+## Letter Spacing
+
+Wide tracking is essential to the design language — especially on `font-mono` labels and `font-display` headings. These utility classes appear most frequently in navigation items, skill tags, and section banners.
+
+| Class | Value | Notes |
+|---|---|---|
+| `tracking-wide` | 0.025em | Mild spread; used on body-size display text |
+| `tracking-wider` | 0.05em | Common on `font-mono` labels and nav items |
+| `tracking-widest` | 0.1em | Default for uppercase `font-mono` labels |
+| `tracking-[0.2em]` | 0.2em | Arbitrary value for maximum-spread hero text |
+
+> `font-mono` labels almost always pair with `tracking-wider` or `tracking-widest` and `uppercase` for the signature terminal aesthetic.
+
+---
+
+## Text Colors
+
+These classes cover the full range of text treatments from semantic hierarchy tokens through direct neon accent application.
+
+| Class | Token | Typical use |
+|---|---|---|
+| `text-text-primary` | `--text-primary` (`#e2e8f0`) | Default body copy and high-emphasis content |
+| `text-text-secondary` | `--text-secondary` (`#94a3b8`) | Supporting descriptions and metadata |
+| `text-text-muted` | `--text-muted` (`#475569`) | Placeholder, disabled, and decorative copy |
+| `text-neon-purple` | `--neon-purple` (`#b026ff`) | Brand headings, active states, primary accents |
+| `text-neon-cyan` | `--neon-cyan` (`#00f3ff`) | Secondary accent labels, skill icons |
+| `text-neon-magenta` | `--neon-magenta` (`#ff00ff`) | Hover emphasis, trait labels, highlights |
+| `text-neon-lime` | `--neon-lime` (`#39ff14`) | Status copy, success messages, rune labels |
+
+---
+
+<Note>
+  Google Fonts loads all four font families (Audiowide is also imported for optional use) via `@import` in `main.css`. In production builds this request is deferred but present — ensure your deployment environment allows outbound network access to `fonts.googleapis.com`.
+</Note>

@@ -1,0 +1,110 @@
+---
+title: "Theming Sys.Witch V2: Colors, Fonts, and Glow Effects"
+sidebarTitle: "Theming"
+description: "Restyle Sys.Witch V2 by swapping its neon accent colors, background shades, glow presets, and Google Fonts — no component edits required."
+---
+
+Sys.Witch V2's entire visual language flows from a small set of CSS custom properties. Changing the five neon accent colors and three background shades is sufficient to create a distinctly different variant — electric blue/red, toxic green/white, or any other cyber palette.
+
+## Changing Neon Colors
+
+All color tokens are declared as CSS custom properties on `:root` inside `assets/main.css`. Open that file and locate the `:root` block:
+
+```css
+:root {
+  --bg-base: #050508;
+  --bg-surface: #0a0a12;
+  --bg-surface-elevated: #12101c;
+  --neon-purple: #b026ff;
+  --neon-magenta: #ff00ff;
+  --neon-cyan: #00f3ff;
+  --neon-lime: #39ff14;
+  --neon-deep-purple: #4a00e0;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+}
+```
+
+Replace any value to shift the palette. Here is a **deep blue / electric teal** variant as an example:
+
+```css
+:root {
+  --bg-base: #020510;
+  --bg-surface: #040a1e;
+  --bg-surface-elevated: #091234;
+  --neon-purple: #2563eb;   /* electric blue */
+  --neon-magenta: #06b6d4; /* teal */
+  --neon-cyan: #22d3ee;    /* light cyan */
+  --neon-lime: #34d399;    /* emerald */
+  --neon-deep-purple: #1d4ed8;
+}
+```
+
+<Tip>
+Update the glow box-shadow variables too — they reference `rgba` values directly, not the CSS variable. Search for `rgba(176, 38, 255` (purple), `rgba(255, 0, 255` (magenta), `rgba(0, 243, 255` (cyan), and `rgba(57, 255, 20` (lime), then update the RGB values to match your new colors.
+</Tip>
+
+## Glow Variables
+
+The glow presets are layered `box-shadow` definitions that give elements their neon bloom. The pattern is two concentric glows — a tighter, more opaque ring and a wider, softer halo:
+
+```css
+--glow-purple: 0 0 10px rgba(176, 38, 255, .5), 0 0 20px rgba(176, 38, 255, .3);
+--glow-magenta: 0 0 10px rgba(255, 0, 255, .5), 0 0 20px rgba(255, 0, 255, .3);
+--glow-cyan: 0 0 10px rgba(0, 243, 255, .5), 0 0 20px rgba(0, 243, 255, .3);
+--glow-lime: 0 0 10px rgba(57, 255, 20, .5), 0 0 20px rgba(57, 255, 20, .3);
+```
+
+When you change a neon color, replace the matching RGB triplet in both layers of its glow variable. The opacity values (`.5` and `.3`) are generally fine to keep — increase them slightly for more intensity, reduce for a subtler bloom.
+
+## Changing Fonts
+
+The four typefaces are loaded via a single Google Fonts `@import` at the top of `assets/main.css`:
+
+```css
+/* Replace any of the four Google Font families */
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Tektur:wght@400;500;600;700;800;900&display=swap');
+```
+
+| Utility class  | Default font     | Role                       |
+| -------------- | ---------------- | -------------------------- |
+| `font-display` | Tektur           | Headings, callouts, labels |
+| `font-mono`    | JetBrains Mono   | Code, terminal, tags       |
+| `font-sans`    | Inter            | Body copy, UI text         |
+
+To swap a typeface, replace the family name in the `@import` URL, then update the corresponding utility class definition:
+
+```css
+/* In your Tailwind config or CSS override */
+.font-display { font-family: 'YourDisplayFont', cursive; }
+.font-mono    { font-family: 'YourMonoFont', monospace; }
+.font-sans    { font-family: 'YourBodyFont', sans-serif; }
+```
+
+Audiowide is used in a small number of decorative accent spans. If you remove it from the import, replace those instances with `font-display` to avoid a font-stack fallback.
+
+## Scrollbar Styling
+
+The custom scrollbar is styled to match the dark background and neon purple palette. You will find this block in `assets/main.css`:
+
+```css
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--neon-deep-purple); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--neon-purple); }
+```
+
+Because the thumb colors reference CSS variables, they automatically inherit any palette changes you make to `--neon-deep-purple` and `--neon-purple`. No separate update is needed unless you want to point the thumb at a different accent entirely.
+
+## Tailwind Customization
+
+The Tailwind utility classes used throughout the components — `bg-base`, `bg-surface-elevated`, `border-neon-purple`, `text-neon-cyan`, `shadow-glow-purple`, `text-glow-cyan`, `drop-shadow-glow-lime`, and so on — are generated from the Tailwind configuration, which maps them to the underlying CSS variable values.
+
+If you change the CSS custom property values, run a fresh build so Tailwind regenerates the stylesheet with the updated tokens:
+
+```bash
+npm run build
+```
+
+During development, `npm run dev` watches for changes and hot-reloads automatically — no manual rebuild required while the dev server is running.

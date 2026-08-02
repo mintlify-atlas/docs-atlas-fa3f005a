@@ -1,0 +1,100 @@
+---
+title: "Adding and Replacing Portfolio Content"
+sidebarTitle: "Adding Content"
+description: "Step-by-step process for swapping every placeholder entry in Sys.Witch V2's data files with your own projects, skills, writing, and case studies."
+---
+
+Sys.Witch V2 ships with four placeholder data files and two inline data sets. Replacing the placeholder content with your own takes about 30 minutes — here is the complete checklist.
+
+## Content Replacement Checklist
+
+<Steps>
+  <Step title="Replace project entries">
+    Open `data/projects.js` and replace the four placeholder projects with your own work. Each project object requires the following fields:
+
+    | Field        | Required | Notes                                        |
+    | ------------ | -------- | -------------------------------------------- |
+    | `id`         | Yes      | Unique string slug, e.g. `"my-app"`          |
+    | `title`      | Yes      | Display name shown on the card               |
+    | `description`| Yes      | One or two sentence summary                  |
+    | `tags`       | Yes      | Array of technology/keyword strings          |
+    | `image`      | Yes      | Absolute URL or path to a landscape image    |
+    | `demoUrl`    | No       | Live demo link — omit if not applicable      |
+    | `sourceUrl`  | No       | GitHub/GitLab repo link                      |
+    | `readmeUrl`  | No       | Link to a detailed README or case study      |
+
+    Remove any placeholder entries entirely rather than leaving them with dummy data.
+  </Step>
+  <Step title="Update your skills">
+    Open `data/skills.js` and replace the 12 placeholder skills with your actual stack. Each skill object takes a `name`, a `mastery` level, and a `sigilId` for the decorative icon.
+
+    - Use `mastery: 'Master'` for your strongest, most practiced technologies.
+    - Use `mastery: 'Adept'` for skills you use regularly but are still deepening.
+    - Pick a `sigilId` from the available sigil set for each entry.
+
+    There is no hard limit on the number of skills, but 8–16 renders well in the grid layout.
+  </Step>
+  <Step title="Add your writing">
+    Open `data/writing.js` and add your published articles, posts, or tutorials. Point the `url` field to the actual published post. Remove all placeholder entries.
+
+    Sort entries newest-first so the most recent writing appears at the top of the list.
+  </Step>
+  <Step title="Write your case studies">
+    Open `data/caseStudies.js` — this file takes the most time to complete. Each case study should contain **4–8 narrative sections** covering the problem, your approach, decisions made, and outcomes.
+
+    Delete both placeholder entries before publishing. Shipping a portfolio with placeholder case study text is the most common oversight when launching a Sys.Witch V2 site.
+  </Step>
+  <Step title="Update the timeline">
+    The About page timeline is **not** driven by a separate data file. Open the About page component (rendered via your Layout and React Router route) and edit the timeline data inline where it is defined in the component body.
+
+    Each timeline entry typically includes a year, a role or event title, and a short description.
+  </Step>
+  <Step title="Update contact info">
+    Out of the box, the `SummoningForm` component uses a mock submission handler — it simulates success without sending any email. To make it functional, open `components/contact/SummoningForm.js` and replace the mock handler with a real form service call.
+
+    Popular options that work well with a static site:
+    - **[Formspree](https://formspree.io)** — POST to a Formspree endpoint, no backend needed.
+    - **[EmailJS](https://www.emailjs.com)** — call `emailjs.send()` directly from the browser.
+    - Any other headless form service that accepts a JSON or `multipart/form-data` POST.
+  </Step>
+</Steps>
+
+## Images
+
+**Project images** render best at a **16:9 or wider landscape aspect ratio**, approximately 800 px wide. The project card component automatically applies a `grayscale` + `contrast-125` CSS filter, so vivid or colorful source images are fine — the filter gives everything a consistent high-contrast monochrome look that complements the neon palette.
+
+The placeholder data uses Unsplash URLs in this format, which you can reuse or replace:
+
+```
+https://images.unsplash.com/photo-PHOTO_ID?auto=format&fit=crop&q=80&w=800
+```
+
+Self-hosted images can be placed in the `public/` directory and referenced as `/images/my-project.jpg`.
+
+## Page Metadata
+
+Each HTML entry point (`index.html`, `about.html`, etc.) contains a `<title>` tag that currently reads `Sys.Witch V2`. Update these to meaningful titles for better browser tab labels and search engine previews:
+
+```html
+<!-- Before -->
+<title>Sys.Witch V2</title>
+
+<!-- After -->
+<title>Jane Doe — Full Stack Engineer</title>
+```
+
+Add or update `<meta name="description">` tags in the same files for additional SEO context.
+
+## Name and Branding
+
+The string `SYS.WITCH` appears in three places that you should update to reflect your own name or handle:
+
+| Location             | What to change                        |
+| -------------------- | ------------------------------------- |
+| `PortalNav` component | Site name / logo text in the nav bar  |
+| `Layout` footer       | Copyright line at the bottom of every page |
+| `index.html` `<title>` tags | Browser tab title and bookmark label |
+
+<Tip>
+Work through the data files one at a time, keeping the dev server running (`npm run dev`). Hot-reload will show your changes instantly so you can catch layout issues — such as an overly long title or a missing image — as you go.
+</Tip>

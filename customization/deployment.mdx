@@ -1,0 +1,159 @@
+---
+title: "Deploying Sys.Witch V2 to GitHub Pages and Other Hosts"
+sidebarTitle: "Deployment"
+description: "Deploy your Sys.Witch V2 static site to GitHub Pages, Netlify, Vercel, or Cloudflare Pages — including SPA routing fixes for each platform."
+---
+
+Sys.Witch V2 is a fully static site — the Vite build produces a `dist/` folder of HTML, CSS, and JS files that can be deployed to any static host. GitHub Pages is the simplest option for a public portfolio.
+
+## Build the Site
+
+Run the Vite production build before deploying to any host:
+
+```bash
+npm run build
+# Output goes to dist/
+```
+
+The `dist/` directory contains the compiled `assets/main.js`, `assets/main.css`, and the HTML entry points. Everything needed to serve the site is self-contained in that folder — there is no server process, no database, and no build step required on the host.
+
+## Deploy to GitHub Pages
+
+<Steps>
+  <Step title="Configure Vite base path">
+    If your site will be served from a sub-path — for example `https://username.github.io/sys.witch-v2/` rather than a root custom domain — you must tell Vite the base path so that asset URLs resolve correctly.
+
+    Add the `base` option to `vite.config.js`:
+
+    ```js
+    // vite.config.js
+    export default {
+      base: '/sys.witch-v2/',  // replace with your actual repo name
+    }
+    ```
+
+    If you are deploying to a root custom domain (e.g. `https://yourname.dev`), you can skip this step or set `base: '/'`.
+
+    <Note>
+    GitHub Pages requires the repository to be **public**, or the repository owner must have a **GitHub Pro or Teams** plan to enable Pages on a private repository.
+    </Note>
+  </Step>
+  <Step title="Create a GitHub Actions workflow">
+    Add the following file to your repository. The workflow installs dependencies, builds the site, and pushes `dist/` to the `gh-pages` branch automatically on every push to `main`.
+
+    ```yaml
+    # .github/workflows/deploy.yml
+    name: Deploy to GitHub Pages
+    on:
+      push:
+        branches: [main]
+    jobs:
+      deploy:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+          - uses: actions/setup-node@v4
+            with:
+              node-version: 20
+          - run: npm install
+          - run: npm run build
+          - uses: peaceiris/actions-gh-pages@v4
+            with:
+              github_token: ${{ secrets.GITHUB_TOKEN }}
+              publish_dir: ./dist
+    ```
+
+    No additional secrets setup is needed — `GITHUB_TOKEN` is provided automatically by GitHub Actions.
+  </Step>
+  <Step title="Enable GitHub Pages">
+    In your repository on GitHub, go to **Settings → Pages**. Under **Source**, choose **Deploy from a branch**, then select the `gh-pages` branch and the `/ (root)` folder. Save.
+
+    The `gh-pages` branch is created automatically the first time the workflow runs successfully.
+  </Step>
+  <Step title="Push to main">
+    Commit and push your changes to `main`. The Actions workflow triggers, builds the site, and deploys it. After the workflow completes (usually under two minutes), your site is live at the GitHub Pages URL shown in the Pages settings.
+  </Step>
+</Steps>
+
+## Deploy to Netlify
+
+**Drag-and-drop (quickest):** run `npm run build` locally, then drag the `dist/` folder onto [app.netlify.com/drop](https://app.netlify.com/drop). The site is live in seconds with a generated `.netlify.app` URL.
+
+**Netlify CLI:**
+
+```bash
+npx netlify deploy --prod --dir dist
+```
+
+**Continuous deployment from Git:** connect your repository in the Netlify dashboard. Set the build command to `npm run build` and the publish directory to `dist`. Netlify will rebuild and redeploy on every push.
+
+## Deploy to Vercel
+
+```bash
+npm install -g vercel
+vercel --prod
+```
+
+Vercel auto-detects Vite projects and configures the build command and output directory automatically. No extra configuration file is required for a standard Sys.Witch V2 setup.
+
+## Deploy to Cloudflare Pages
+
+1. Open the **Cloudflare Dashboard → Pages → Create a project**.
+2. Connect your GitHub repository.
+3. Set the following build settings:
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+4. Save and deploy. Cloudflare Pages rebuilds the site on every push to the production branch.
+
+## React Router and Client-Side Routing
+
+<Warning>
+Without the SPA redirect configuration, users who bookmark `/projects` or share a direct link will see a 404 error instead of the page. This does not affect navigation from the home page.
+</Warning>
+
+Sys.Witch V2 uses **React Router v6** for client-side routing. When a user navigates directly to `/projects` or `/about` (via a bookmarked URL, a shared link, or a browser refresh), the static host looks for a file at that path — which does not exist — and returns a 404.
+
+The fix is to instruct the host to serve `index.html` for all routes and let React Router handle the path on the client side. Each host has a different mechanism:
+
+**GitHub Pages** — add a `404.html` to `public/` that uses the classic SPA redirect workaround. The `404.html` stores the current path in `sessionStorage` and redirects to `index.html`, which then reads it back and navigates to the correct route:
+
+```html
+<!-- public/404.html — the standard GitHub Pages SPA redirect -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      sessionStorage.redirect = location.href;
+    </script>
+    <meta http-equiv="refresh" content="0;URL='/'">
+  </head>
+</html>
+```
+
+Add a corresponding script to `index.html` to read from `sessionStorage` and restore the route on load.
+
+**Netlify** — add a `_redirects` file to `public/` (Vite copies `public/` contents to `dist/` at build time):
+
+```
+/* /index.html 200
+```
+
+**Vercel** — add a `vercel.json` to the project root:
+
+```json
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+```
+
+**Cloudflare Pages** — Cloudflare Pages has a built-in SPA mode. Add a `_routes.json` to `public/`:
+
+```json
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": ["/assets/*"]
+}
+```
+
+Alternatively, enable the **SPA** preset in the Cloudflare Pages build settings, which handles the rewrite automatically.

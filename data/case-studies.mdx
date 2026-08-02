@@ -1,0 +1,86 @@
+---
+title: "Case Studies Data Schema and Ritual Report Format"
+sidebarTitle: "Case Studies"
+description: "Reference for data/caseStudies.js — covers the Ritual Report section format, recommended narrative sequence, and the two placeholder case studies."
+---
+
+The caseStudies data file powers the Tomes page, rendering each entry as a full **RitualReport** document. It is the most structured data file in the template — each case study is organized into named sections following a problem → process → result narrative.
+
+## Schema
+
+Each object in the exported `c` array has the following top-level fields:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | `string` | Yes | Unique kebab-case identifier |
+| `title` | `string` | Yes | ALL CAPS formatted title, conventionally prefixed with `RITUAL REPORT:` |
+| `sigilId` | `string` | Yes | Sigil displayed in the report header — references a key from `data/sigils.js` |
+| `sections` | `SectionObject[]` | Yes | Ordered array of content sections that make up the report body |
+
+## Section Object
+
+Each item in the `sections` array is a plain object with two fields:
+
+| Field | Type | Description |
+|---|---|---|
+| `heading` | `string` | Section name rendered as a styled subheading within the RitualReport |
+| `content` | `string` | Full prose paragraph for that section — supports plain text |
+
+## Recommended Section Sequence
+
+While sections are free-form, the following sequence produces the clearest problem-to-outcome narrative:
+
+| Section | Purpose |
+|---|---|
+| Problem | What was broken, slow, inaccessible, or missing |
+| Goal | The desired outcome or success criteria |
+| Process | Investigation approach, research, and discovery |
+| Design Decisions | UX and visual choices made during the project |
+| Dev Decisions | Technical implementation strategy and key trade-offs |
+| Testing & Debugging | Bugs encountered, edge cases, and how they were resolved |
+| Result | Measured outcomes, performance improvements, or qualitative wins |
+| Skills Demonstrated | Comma-separated list of competencies the case study evidences |
+
+## Placeholder Case Studies
+
+The template ships with two fully-written placeholder reports:
+
+**1. RITUAL REPORT: NEXUS DASHBOARD REBUILD**
+- **Problem:** SVG-based rendering suffered severe performance degradation beyond 500 data points, causing dropped frames during real-time updates.
+- **Solution:** Hybrid rendering approach — D3.js handles all math, React manages state and SVG overlays, and Canvas draws the raw data points. Canvas scaled by `window.devicePixelRatio` to fix Retina blurriness.
+- **Result:** Stable 60fps rendering 15,000 data points. Payload size down 40%, time-to-interactive improved by 2.5 seconds.
+
+**2. RITUAL REPORT: ACCESSIBLE ALCHEMY UI**
+- **Problem:** The Alchemy UI component library failed a full accessibility audit — keyboard navigation was broken and screen readers received no meaningful state announcements.
+- **Solution:** Replaced custom interaction logic with Radix UI primitives as the accessible base layer, then re-applied Framer Motion animations on top without disrupting ARIA semantics.
+- **Result:** 100% accessibility score in Lighthouse. Fully keyboard-navigable; screen readers correctly announce all state changes.
+
+## Example Entry
+
+```js
+// data/caseStudies.js
+export const caseStudies = [
+  {
+    id: 'nexus-rebuild',
+    title: 'RITUAL REPORT: NEXUS DASHBOARD REBUILD',
+    sigilId: 'case-studies',
+    sections: [
+      {
+        heading: 'Problem',
+        content:
+          'The legacy dashboard suffered severe performance degradation when rendering more than 500 data points. The DOM was bloated, and React was struggling to reconcile the massive component tree during real-time updates.',
+      },
+      {
+        heading: 'Result',
+        content:
+          'Achieved stable 60fps rendering 15,000 data points. Payload size decreased by 40%, time-to-interactive improved by 2.5 seconds.',
+      },
+      // ... additional sections
+    ],
+  },
+];
+```
+
+<Info>
+  You do not need all eight sections for every case study. Include only the headings relevant to the story you are telling. A minimal entry could have just Problem, Process, and Result.
+</Info>

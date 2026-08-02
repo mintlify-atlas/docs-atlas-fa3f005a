@@ -1,0 +1,79 @@
+---
+title: "GlyphButton: Terminal-Style Action Button"
+sidebarTitle: "GlyphButton"
+description: "GlyphButton provides solid and outline variants across four neon colors, styled in uppercase monospace for a terminal-aesthetic interactive element."
+---
+
+GlyphButton is the site's primary interactive element — a styled button using JetBrains Mono in uppercase with wide letter-spacing, available in solid (filled) and outline variants across all four neon colors.
+
+## Props
+
+<ParamField path="color" type="'purple' | 'magenta' | 'cyan' | 'lime'" required>
+  Sets the neon color for the button's fill (solid) or border and text (outline).
+</ParamField>
+
+<ParamField path="variant" type="'solid' | 'outline'" required>
+  Controls the button's visual style. `solid` fills the background with the neon color and sets the text to `--bg-base` for contrast. `outline` uses a transparent background with a neon-colored border and matching neon text.
+</ParamField>
+
+<ParamField path="fullWidth" type="boolean">
+  Adds `w-full` to the button, causing it to span 100% of its container width.
+</ParamField>
+
+<ParamField path="type" type="string">
+  The HTML `type` attribute for the underlying `<button>` element. Accepts `'button'`, `'submit'`, or `'reset'`. Defaults to `'button'`.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Disables the button, preventing interaction and reducing its opacity to signal the inactive state.
+</ParamField>
+
+<ParamField path="onClick" type="function">
+  Click event handler passed directly to the underlying `<button>` element.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional Tailwind or CSS classes merged onto the root element.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  The button's label content. Rendered in uppercase monospace with wide letter-spacing.
+</ParamField>
+
+## Variants
+
+```jsx
+import { GlyphButton } from './components/ui/GlyphButton.js';
+
+// Solid variant — primary CTA
+<GlyphButton color="magenta" variant="solid" onClick={() => window.open(demoUrl)}>
+  Summon Demo
+</GlyphButton>
+
+// Outline variant — secondary action
+<GlyphButton color="purple" variant="outline" onClick={() => window.open(sourceUrl)}>
+  Reveal Source
+</GlyphButton>
+
+// Submit button for form
+<GlyphButton type="submit" color="magenta" variant="solid" fullWidth disabled={isSubmitting}>
+  {isSubmitting ? 'Channeling...' : 'Send The Signal'}
+</GlyphButton>
+
+// Full-width outline
+<GlyphButton color="cyan" variant="outline" fullWidth>
+  Inspect Readme
+</GlyphButton>
+```
+
+## Hover State
+
+On hover, GlyphButton applies a `scale-105` transform and intensifies the `shadow-glow-*` shadow for the active color. This provides tactile, responsive feedback that reinforces the neon aesthetic without requiring additional markup.
+
+## Disabled State
+
+When `disabled` is `true`, the button becomes non-interactive — pointer events are suppressed and the element renders at reduced opacity. This is used in form contexts (e.g., SummoningForm) while an async submission is in flight, preventing duplicate submissions.
+
+<Tip>
+  Follow the project convention: use `solid` for the primary or most important action in a given context, and `outline` for secondary actions. Mixing too many solid buttons in one area creates visual noise.
+</Tip>

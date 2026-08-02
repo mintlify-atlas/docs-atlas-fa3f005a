@@ -1,0 +1,104 @@
+---
+title: "Sigils and Runes: The SVG Glyph System"
+sidebarTitle: "Sigils & Runes"
+description: "A complete guide to Sys.Witch V2's SVG sigil library — 18 hand-crafted glyphs for navigation icons, skill badges, and decorative section markers."
+---
+
+Sys.Witch V2 ships 18 hand-crafted SVG sigils used as navigation icons, decorative elements, skill badges, and section markers. Each sigil is a named path stored in `data/sigils.js` and rendered via the `Sigil` component. The collection is split into two groups: **navigation sigils** (one per major site section plus personality traits) and **runes** (seven abstract geometric glyphs used for decoration and skill indicators).
+
+---
+
+## Sigil Library
+
+| ID | Semantic use |
+|---|---|
+| `home` | Landing / index |
+| `about` | About section |
+| `projects` | Projects section |
+| `skills` | Skills section |
+| `writing` | Writing section |
+| `case-studies` | Case studies section |
+| `contact` | Contact section |
+| `trait-detail` | Detail-oriented trait |
+| `trait-creative` | Creative trait |
+| `trait-sarcastic` | Sarcastic trait |
+| `trait-practical` | Practical trait |
+| `trait-pattern` | Pattern-spotter trait |
+| `rune-1` | Hourglass / diamond glyph |
+| `rune-2` | Double-diamond glyph |
+| `rune-3` | Cross / X glyph |
+| `rune-4` | Circle with cross |
+| `rune-5` | Grid / hashtag |
+| `rune-6` | Rotated diamond |
+| `rune-7` | Triangle |
+
+---
+
+## Rendering a Sigil
+
+Import the `Sigil` component and pass it an `id` from the library above. The `size`, `color`, and `className` props are all optional.
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `id` | `string` | Yes | Sigil ID from the library above |
+| `size` | `number` | No | Render size in pixels (default inferred from SVG viewBox) |
+| `color` | `string` | No | One of: `purple`, `magenta`, `cyan`, `lime` — maps to the matching neon color token |
+| `className` | `string` | No | Additional Tailwind or CSS classes applied to the SVG element |
+
+### Code Examples
+
+```jsx
+import { Sigil } from './components/sigils/Sigil.js';
+
+// Navigation icon
+<Sigil id="projects" size={24} color="cyan" />
+
+// Large decorative element
+<Sigil id="case-studies" size={48} color="magenta" className="mx-auto mb-4" />
+
+// Skill badge rune
+<Sigil id="rune-4" size={16} color="purple" />
+```
+
+---
+
+## Glow Effects on Sigils
+
+Because `Sigil` renders a raw `<svg>` element, `box-shadow` has no effect. Instead, apply `drop-shadow-glow-*` utilities (filter-based) and combine them with `group-hover:` for interactive hover states.
+
+```jsx
+<div className="group">
+  <Sigil
+    id="home"
+    size={32}
+    color="cyan"
+    className="group-hover:drop-shadow-glow-cyan transition-all duration-300"
+  />
+</div>
+```
+
+The `transition-all duration-300` pairing gives the glow a smooth fade-in on hover rather than a hard snap. You can swap the `color` prop and `drop-shadow-glow-*` class independently — for example, render the sigil in `lime` while the hover glow pulses `cyan` for a two-tone effect.
+
+---
+
+## Adding a Custom Sigil
+
+Add a new key/value pair to the exported object in `data/sigils.js`. The value must be a valid SVG `d` attribute string drawn within a 24×24 coordinate space.
+
+```js
+// data/sigils.js — add your path to the exported object
+const sigils = {
+  // ... existing sigils ...
+  'my-custom-sigil': 'M12 4 L20 12 L12 20 L4 12 Z',  // SVG path d attribute
+};
+```
+
+Then reference it anywhere in the app:
+
+```jsx
+<Sigil id="my-custom-sigil" size={24} color="cyan" />
+```
+
+<Tip>
+  Sigil paths use a 24×24 viewBox coordinate space. Keep your custom path values within 0–24 on both axes for consistent sizing alongside the built-in library.
+</Tip>

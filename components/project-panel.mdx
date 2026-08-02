@@ -1,0 +1,61 @@
+---
+title: "ProjectPanel: Animated Project Detail View"
+sidebarTitle: "ProjectPanel"
+description: "ProjectPanel renders project details — image, tags, description, binding notes, and action buttons — with smooth animated transitions on project change."
+---
+
+ProjectPanel renders the full detail view of a single selected project: a grayscale header image, neon-magenta title, tag badges, description prose, an optional BINDING NOTES aside, and contextual action buttons. When the selected project changes, Framer Motion animates the outgoing content out and the incoming content in via a horizontal slide transition.
+
+## Props
+
+<ParamField path="project" type="Project | null" required>
+  The project object to display. When `null`, ProjectPanel renders an empty placeholder state instead of a project detail view.
+</ParamField>
+
+## Project Object Shape
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | `string` | Required | Unique identifier for the project |
+| `title` | `string` | Required | Display name shown in the panel header |
+| `description` | `string` | Required | Full prose description of the project |
+| `tags` | `string[]` | Required | Technology or topic labels shown as mono badges |
+| `image` | `string` | Required | URL of the project header image |
+| `demoUrl` | `string` | Optional | URL for the live demo — renders a "Summon Demo" button |
+| `sourceUrl` | `string` | Optional | URL for the source repository — renders a "Reveal Source" button |
+| `readmeUrl` | `string` | Optional | URL for the README — renders an "Inspect Readme" button |
+| `bindingNotes` | `string` | Optional | Short technical note rendered in the BINDING NOTES aside block |
+
+## Usage
+
+```jsx
+const [selectedProject, setSelectedProject] = useState(null);
+
+// Typically paired with SummoningCircle
+<div className="flex flex-col lg:flex-row gap-12">
+  <SummoningCircle
+    projects={projects}
+    selectedId={selectedProject?.id}
+    onSelect={setSelectedProject}
+  />
+  <ProjectPanel project={selectedProject} />
+</div>
+```
+
+## Placeholder State
+
+When the `project` prop is `null`, ProjectPanel renders a centered placeholder instead of a detail view. The placeholder displays a `Sigil` with id `projects`, size `48`, and color `magenta`, along with a short prompt instructing the user to select a project from the list. This state appears on initial page load if no project has been pre-selected.
+
+## BINDING NOTES
+
+The optional `bindingNotes` field activates a highlighted aside block inside the panel — styled with a purple left border, the `rune-3` Sigil, and a small "BINDING NOTES" label. Use it for brief technical context that sits outside the main description:
+
+```js
+bindingNotes: "Data persists locally. No external database summoned."
+```
+
+This block is purely presentational and is only rendered when `bindingNotes` is a non-empty string.
+
+<Note>
+  Action buttons (Summon Demo, Reveal Source, Inspect Readme) only render if the corresponding URL field is provided in the project data. A project with no URLs will show no action buttons at all.
+</Note>

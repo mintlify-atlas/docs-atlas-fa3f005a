@@ -1,0 +1,68 @@
+---
+title: "SummoningForm: Animated Contact Form"
+sidebarTitle: "SummoningForm"
+description: "SummoningForm is a three-field animated contact form with mocked submission state, a success confirmation view, and a drop-in real backend integration path."
+---
+
+SummoningForm is the contact form component — a three-field form wrapped in an animated GlowFrame, with styled labels referencing rune icons. It ships with a mocked submission handler that you replace with a real form backend once you're ready to go live. All state is managed internally; the component takes no props.
+
+## Fields
+
+| Field | Label | Type | Required |
+|---|---|---|---|
+| `name` | Entity Identifier | `text` | Yes |
+| `email` | Return Frequency | `email` | Yes |
+| `message` | Transmission Payload | `textarea` | Yes |
+
+Each field label is rendered with a Sigil rune icon and `font-mono` uppercase tracking — consistent with the portfolio's occult-terminal aesthetic.
+
+## Submission States
+
+SummoningForm cycles through three visual states during the submit flow:
+
+- **Idle** — The full form is visible and interactive. The submit button reads "Send The Signal."
+- **Submitting** — The button label switches to "Channeling...", the button pulses with `animate-pulse`, and the button is `disabled` to prevent duplicate submissions.
+- **Success** — The form is replaced (via AnimatePresence) by a confirmation view: a `Sigil` with id `rune-4`, size `64`, color `magenta`, the heading "Signal Transmitted", and the subtext "The message has entered the void." After 3 seconds, the form resets to idle.
+
+## Mock vs Real Submission
+
+The component ships with a mock handler that simulates the submit delay and success state without calling any backend:
+
+```js
+// Current mock in SummoningForm.js
+const handleSubmit = (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  setTimeout(() => {
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+    setTimeout(() => setIsSubmitted(false), 3000);
+  }, 1500);
+};
+```
+
+Replace it with a real `fetch` call when you're ready. Here's an example using Formspree:
+
+```js
+// Replace the mock with a real handler
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  const formData = new FormData(e.target);
+  await fetch('https://formspree.io/f/your-form-id', {
+    method: 'POST',
+    body: formData,
+    headers: { Accept: 'application/json' },
+  });
+  setIsSubmitting(false);
+  setIsSubmitted(true);
+};
+```
+
+<Tip>
+  Formspree, Netlify Forms, and EmailJS are all zero-backend options that work well with static GitHub Pages deployments. No server required.
+</Tip>
+
+<Note>
+  SummoningForm accepts no props — all state is managed internally. To pre-fill fields or handle the response differently, edit the component source at `components/contact/SummoningForm.js`.
+</Note>

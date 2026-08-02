@@ -1,0 +1,81 @@
+---
+title: "Sigil: SVG Glyph Renderer"
+sidebarTitle: "Sigil"
+description: "Sigil renders stroked SVG icons by looking up path data from the sigil library by ID, with four neon color options and flexible px sizing."
+---
+
+Sigil is the core primitive for all iconography in Sys.Witch V2. It looks up a path string from the sigil library by ID and renders it as a stroked SVG, supporting four neon color options and arbitrary sizing.
+
+## Props
+
+<ParamField path="id" type="string" required>
+  The sigil identifier used to look up the corresponding path string in `data/sigils.js`. See the [Sigils & Runes](/design/sigils-and-runes) page for the complete list of available IDs.
+</ParamField>
+
+<ParamField path="size" type="number">
+  The rendered `width` and `height` of the SVG element in pixels. The SVG uses a fixed `24×24` viewBox, so `size` scales proportionally. Typical values:
+
+  | Value | Context |
+  |---|---|
+  | `12` | Inline / form field label |
+  | `16` | Small badge |
+  | `24` | Navigation icon |
+  | `32` | Feature tile |
+  | `48` | Decorative element |
+  | `64` | Hero / large display |
+</ParamField>
+
+<ParamField path="color" type="'purple' | 'magenta' | 'cyan' | 'lime'">
+  Maps to the corresponding neon CSS variable, which is applied as the SVG `stroke` color.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional classes applied to the `<svg>` element. Useful for adding glow or drop-shadow utilities (`drop-shadow-glow-magenta`), transition effects, or positioning helpers.
+</ParamField>
+
+## SVG Attributes
+
+The following attributes are applied to every rendered `<svg>` element and are not configurable via props:
+
+| Attribute | Value |
+|---|---|
+| `viewBox` | `0 0 24 24` |
+| `fill` | `none` |
+| `stroke` | Mapped neon color variable (e.g., `var(--neon-magenta)`) |
+| `strokeWidth` | `1.5` |
+| `strokeLinecap` | `round` |
+| `strokeLinejoin` | `round` |
+
+## Usage Examples
+
+```jsx
+import { Sigil } from './components/sigils/Sigil.js';
+
+// Navigation icon (PortalNav pattern)
+<Sigil id="projects" size={24} color="magenta" />
+
+// Feature tile icon
+<Sigil id="skills" size={32} color="lime" className="mb-4" />
+
+// Hero/decorative element
+<Sigil id="case-studies" size={48} color="magenta" className="mx-auto drop-shadow-glow-magenta" />
+
+// Small form field label icon
+<Sigil id="rune-1" size={12} color="magenta" />
+
+// Animated on group hover
+<div className="group">
+  <Sigil
+    id="about"
+    size={20}
+    color="purple"
+    className="transition-transform duration-500 group-hover:rotate-180"
+  />
+</div>
+```
+
+## Using Sigils in Skill Tiles
+
+Each entry in `data/skills.js` includes a `sigilId` field. `RuneTile` reads this field and passes it directly to `Sigil` as the `id` prop, rendering the skill's associated glyph as its tile icon. This is the standard pattern for associating content records with their visual glyphs — add a `sigilId` to a data entry, then let the consuming component hand it off to `Sigil`.
+
+For the complete sigil ID reference and path definitions, see the [Sigils & Runes](/design/sigils-and-runes) page.

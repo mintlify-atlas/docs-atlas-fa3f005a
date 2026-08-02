@@ -1,0 +1,81 @@
+---
+title: "Sys.Witch V2 Project Structure and File Layout"
+sidebarTitle: "Structure"
+description: "A complete map of Sys.Witch V2's directory layout, explaining how components, data files, HTML shells, and compiled assets are organized."
+---
+
+Sys.Witch V2 follows a flat component architecture — there is no `src/` subdirectory. Everything lives at the repository root, organized by concern: HTML shells, compiled assets, React components, and content data all sit alongside each other at the top level. This keeps imports short and the project easy to navigate.
+
+```text
+sys.witch-v2/
+├── index.html              # SPA entry point
+├── about.html              # Static HTML shells for each route
+├── projects.html
+├── skills.html
+├── writing.html
+├── casestudies.html
+├── contact.html
+├── placeholders.html
+├── assets/
+│   ├── main.js             # Compiled React application bundle
+│   ├── main.css            # Compiled Tailwind CSS
+│   ├── index.js            # React + React Router runtime
+│   ├── index2.js           # Framer Motion (AnimatePresence)
+│   └── proxy.js            # Framer Motion motion proxy
+├── components/
+│   ├── layout/
+│   │   ├── Layout.js       # Root app shell
+│   │   ├── PortalNav.js    # Top navigation bar
+│   │   ├── ParticleField.js# Canvas particle animation
+│   │   └── RuneDivider.js  # Decorative section divider
+│   ├── ui/
+│   │   ├── GlowFrame.js    # Bordered card container
+│   │   └── GlyphButton.js  # Styled action button
+│   ├── sigils/
+│   │   ├── Sigil.js        # SVG sigil renderer
+│   │   └── PortalRing.js   # Animated ring decoration
+│   ├── about/
+│   │   ├── TimelineEntry.js
+│   │   └── TraitSigilGrid.js
+│   ├── projects/
+│   │   ├── ProjectPanel.js
+│   │   └── SummoningCircle.js
+│   ├── skills/
+│   │   └── RuneTile.js
+│   ├── writing/
+│   │   └── TomeCard.js
+│   ├── case/
+│   │   └── RitualReport.js
+│   └── contact/
+│       └── SummoningForm.js
+├── data/
+│   ├── projects.js         # Project entries array
+│   ├── skills.js           # Skills array with categories
+│   ├── writing.js          # Writing/blog entries
+│   ├── caseStudies.js      # Case study documents
+│   └── sigils.js           # SVG path map keyed by sigil ID
+└── images/
+    └── screenshots/        # Portfolio preview images
+```
+
+## How pages work
+
+Sys.Witch V2 is a React SPA. Each `.html` file (`about.html`, `projects.html`, `skills.html`, etc.) is an identical static shell — the same `<div id="root"></div>` target that loads the same compiled React bundle from `assets/main.js`. None of those HTML files contain any unique markup.
+
+React Router v6 handles all client-side navigation. When a visitor clicks a nav link, React Router intercepts the event and swaps the rendered component inside the `<main>` region of the `Layout` shell without triggering a full page reload. Framer Motion's `AnimatePresence` wraps each route transition so entering and exiting pages blur and scale in/out smoothly.
+
+The static HTML shells exist to ensure direct URL access still works when deployed to GitHub Pages — each file resolves to the same bundle, which then reads `window.location` and renders the correct route immediately.
+
+## Data vs Components
+
+The project maintains a clear separation between **content** and **presentation**:
+
+- **`data/` files** are pure content you edit frequently. They export simple JavaScript arrays of plain objects — no JSX, no imports, no framework knowledge required. This is where you put your project titles, skill names, writing entries, and case study text.
+
+- **`components/` files** are the reusable UI you rarely touch unless you are customizing the visual design. They consume data from `data/` through props and render it using Tailwind classes, Framer Motion animations, and the neon color token system.
+
+This separation means you can refresh your entire portfolio — new projects, updated skills, new writing — by only editing files in `data/`, without opening a single component.
+
+<Info>
+  The `assets/` directory is a Vite build output — do not edit files inside it directly. Your source is in `components/` and `data/`.
+</Info>

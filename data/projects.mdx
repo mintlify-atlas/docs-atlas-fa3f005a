@@ -1,0 +1,63 @@
+---
+title: "Projects Data Schema and Placeholder Entries"
+sidebarTitle: "Projects"
+description: "Reference for data/projects.js — the primary content file for your portfolio. Learn the full field schema and how to add or replace project entries."
+---
+
+The projects data file exports the array of portfolio projects displayed on the Projects page. It is the primary content file you will edit when setting up your portfolio.
+
+## Schema
+
+Each object in the exported `p` array accepts the following fields:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | `string` | Yes | Unique kebab-case identifier (e.g. `void-tracker`) |
+| `title` | `string` | Yes | All-caps project name displayed as the card heading |
+| `description` | `string` | Yes | 1–3 sentence project description |
+| `tags` | `string[]` | Yes | Technology tags rendered as badge pills |
+| `image` | `string` (URL) | Yes | Hero image URL — landscape orientation, ~800px wide recommended |
+| `demoUrl` | `string` | No | Live demo URL — the **Demo** button is shown only if this field is provided |
+| `sourceUrl` | `string` | No | Repository URL — the **Source** button is shown only if this field is provided |
+| `readmeUrl` | `string` | No | README or docs URL — the **README** button is shown only if this field is provided |
+| `bindingNotes` | `string` | No | Short technical caveat rendered in the purple aside block on the project card |
+
+## Example Entry
+
+The following is the complete object for the first placeholder project:
+
+```js
+{
+  id: 'void-tracker',
+  title: 'VOID TRACKER',
+  description:
+    'A dark-mode first task management system utilizing local storage and a custom drag-and-drop interface. Built to organize chaos into structured data.',
+  tags: ['React', 'TypeScript', 'Tailwind', 'Zustand'],
+  image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&q=80&w=800',
+  demoUrl: '#',
+  sourceUrl: '#',
+  bindingNotes: 'Data persists locally. No external database summoned.',
+}
+```
+
+## Placeholder Projects
+
+The template ships with four placeholder entries to demonstrate layout and styling:
+
+| `id` | `title` | Key Tags |
+|---|---|---|
+| `void-tracker` | VOID TRACKER | React, TypeScript, Tailwind, Zustand |
+| `nexus-dashboard` | NEXUS DASHBOARD | Next.js, D3.js, Framer Motion, WebSockets |
+| `spell-checker-cli` | SPELL.CHK CLI | Rust, CLI, Regex, Markdown |
+| `alchemy-ui` | ALCHEMY UI | React, Storybook, Radix UI, CSS Modules |
+
+## Adding Your Projects
+
+1. Open `data/projects.js`.
+2. Replace or append entries to the exported array — each item must follow the schema above.
+3. Host your project screenshots somewhere publicly accessible. Unsplash URLs work well for placeholders; swap them for your own images before publishing.
+4. Set `demoUrl`, `sourceUrl`, and `readmeUrl` only for the links that genuinely apply to a given project — omitting a field hides that button entirely.
+
+<Tip>
+  Use an all-caps title to match the project convention (VOID TRACKER, NEXUS DASHBOARD). Sentence-case in the description is fine.
+</Tip>

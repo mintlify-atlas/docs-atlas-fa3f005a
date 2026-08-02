@@ -1,0 +1,66 @@
+---
+title: "Layout Component: App Shell and Page Structure"
+sidebarTitle: "Layout"
+description: "Layout is the root app shell that combines ParticleField, PortalNav, animated page transitions, and the footer into a unified page structure."
+---
+
+Layout is the root wrapper component that assembles the full page shell — it combines ParticleField, PortalNav, the animated page outlet, and the footer into a cohesive structure. Every page in the site is rendered as a child of Layout via React Router's `<Outlet>`, ensuring consistent chrome and ambient visuals across all routes.
+
+## Behavior
+
+Layout operates in two distinct modes depending on the current route.
+
+**Home route (`/`)** — PortalNav and footer are hidden. ParticleField fills the screen behind the page content, and the main area carries no top or bottom padding. This allows the homepage to occupy the full viewport with an uninterrupted fullscreen presentation.
+
+**All other routes** — PortalNav is visible as a sticky top bar, the main content area receives `pt-24 pb-16` padding to clear the nav and breathe at the bottom, and the footer appears below the page content. Layout detects the current route using React Router's `useLocation()` hook and toggles these elements accordingly.
+
+```jsx
+import { Layout } from './components/layout/Layout.js';
+
+// React Router v6 route config
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: 'about', element: <AboutPage /> },
+      { path: 'projects', element: <ProjectsPage /> },
+      // ...
+    ],
+  },
+]);
+```
+
+## Page Transitions
+
+Layout wraps the `<Outlet>` in Framer Motion's `<AnimatePresence mode="wait">`. When the route changes, the outgoing page plays its exit animation to completion before the incoming page begins its enter animation — eliminating overlap between transitions.
+
+Each page component is responsible for defining its own animation variants using a `motion.div` root element. The recommended transition uses opacity, scale, and a blur filter:
+
+```jsx
+import { motion } from 'framer-motion';
+
+export function MyPage() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
+      animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+      exit={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
+    >
+      {/* page content */}
+    </motion.div>
+  );
+}
+```
+
+The `mode="wait"` setting is key — without it, both the entering and exiting pages would animate simultaneously, which breaks the visual flow. Every built-in page in Sys.Witch V2 uses this pattern.
+
+## Footer
+
+The footer renders below the main content area on all routes except the home route. It displays a monospace copyright notice in `text-xs text-text-muted`, separated from the page content by a `border-t border-neon-purple/20` rule. The footer background is `bg-surface/50` with `backdrop-blur-sm`, matching the translucent layering style used throughout the template.
+
+<Note>
+  The footer renders on all routes except the home route (`/`). To customize the footer text, edit the JSX inside the Layout component directly.
+</Note>
