@@ -1,7 +1,7 @@
 ---
-title: "ProjectPanel: Animated Project Detail View"
+title: "ProjectPanel: Animated Project Detail Panel Component"
 sidebarTitle: "ProjectPanel"
-description: "ProjectPanel renders project details — image, tags, description, binding notes, and action buttons — with smooth animated transitions on project change."
+description: "ProjectPanel renders project details — image, tags, description, binding notes, and action buttons — with animated slide transitions on project change."
 ---
 
 ProjectPanel renders the full detail view of a single selected project: a grayscale header image, neon-magenta title, tag badges, description prose, an optional BINDING NOTES aside, and contextual action buttons. When the selected project changes, Framer Motion animates the outgoing content out and the incoming content in via a horizontal slide transition.
@@ -31,13 +31,16 @@ ProjectPanel renders the full detail view of a single selected project: a graysc
 ```jsx
 const [selectedProject, setSelectedProject] = useState(null);
 
-// Typically paired with SummoningCircle
+// Typically paired with SummoningCircle — one circle per project
 <div className="flex flex-col lg:flex-row gap-12">
-  <SummoningCircle
-    projects={projects}
-    selectedId={selectedProject?.id}
-    onSelect={setSelectedProject}
-  />
+  {projects.map((project, i) => (
+    <SummoningCircle
+      key={project.id}
+      project={project}
+      isActive={selectedProject?.id === project.id}
+      onClick={() => setSelectedProject(project)}
+    />
+  ))}
   <ProjectPanel project={selectedProject} />
 </div>
 ```
@@ -45,6 +48,10 @@ const [selectedProject, setSelectedProject] = useState(null);
 ## Placeholder State
 
 When the `project` prop is `null`, ProjectPanel renders a centered placeholder instead of a detail view. The placeholder displays a `Sigil` with id `projects`, size `48`, and color `magenta`, along with a short prompt instructing the user to select a project from the list. This state appears on initial page load if no project has been pre-selected.
+
+## Animation Details
+
+ProjectPanel wraps its content in Framer Motion's `AnimatePresence` with `mode="wait"`. When the `project` prop changes, the outgoing panel animates to `{ opacity: 0, x: -20 }` and the incoming panel animates in from `{ opacity: 0, x: 20 }` to `{ opacity: 1, x: 0 }`, with a transition `duration` of `0.3` seconds. The `project.id` is used as the motion key so that switching between projects correctly triggers the exit and enter animations.
 
 ## BINDING NOTES
 

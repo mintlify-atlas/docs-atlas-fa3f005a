@@ -1,5 +1,5 @@
 ---
-title: "Adding and Replacing Portfolio Content"
+title: "Adding and Replacing Your Sys.Witch V2 Portfolio Content"
 sidebarTitle: "Adding Content"
 description: "Step-by-step process for swapping every placeholder entry in Sys.Witch V2's data files with your own projects, skills, writing, and case studies."
 ---
@@ -47,10 +47,10 @@ Sys.Witch V2 ships with four placeholder data files and two inline data sets. Re
   <Step title="Update the timeline">
     The About page timeline is **not** driven by a separate data file. Open the About page component (rendered via your Layout and React Router route) and edit the timeline data inline where it is defined in the component body.
 
-    Each timeline entry typically includes a year, a role or event title, and a short description.
+    Each timeline entry includes a `year` range, a `title` for the role or event, and a `description` paragraph.
   </Step>
   <Step title="Update contact info">
-    Out of the box, the `SummoningForm` component uses a mock submission handler — it simulates success without sending any email. To make it functional, open `components/contact/SummoningForm.js` and replace the mock handler with a real form service call.
+    Out of the box, the `SummoningForm` component uses a mock submission handler — it simulates a 1.5-second "sending" state and then shows a success message without sending any email. To make it functional, open `components/contact/SummoningForm.js` and replace the mock handler with a real form service call.
 
     Popular options that work well with a static site:
     - **[Formspree](https://formspree.io)** — POST to a Formspree endpoint, no backend needed.

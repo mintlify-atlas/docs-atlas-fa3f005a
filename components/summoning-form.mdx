@@ -1,14 +1,14 @@
 ---
-title: "SummoningForm: Animated Contact Form"
+title: "SummoningForm: Animated Three-Field Contact Form Component"
 sidebarTitle: "SummoningForm"
-description: "SummoningForm is a three-field animated contact form with mocked submission state, a success confirmation view, and a drop-in real backend integration path."
+description: "SummoningForm is a three-field animated contact form with mocked submission, a success confirmation view, and a drop-in real backend integration path."
 ---
 
 SummoningForm is the contact form component — a three-field form wrapped in an animated GlowFrame, with styled labels referencing rune icons. It ships with a mocked submission handler that you replace with a real form backend once you're ready to go live. All state is managed internally; the component takes no props.
 
 ## Fields
 
-| Field | Label | Type | Required |
+| Field ID | Label | Type | Required |
 |---|---|---|---|
 | `name` | Entity Identifier | `text` | Yes |
 | `email` | Return Frequency | `email` | Yes |
@@ -22,7 +22,7 @@ SummoningForm cycles through three visual states during the submit flow:
 
 - **Idle** — The full form is visible and interactive. The submit button reads "Send The Signal."
 - **Submitting** — The button label switches to "Channeling...", the button pulses with `animate-pulse`, and the button is `disabled` to prevent duplicate submissions.
-- **Success** — The form is replaced (via AnimatePresence) by a confirmation view: a `Sigil` with id `rune-4`, size `64`, color `magenta`, the heading "Signal Transmitted", and the subtext "The message has entered the void." After 3 seconds, the form resets to idle.
+- **Success** — The form is replaced by a confirmation view: a `Sigil` with id `rune-4`, size `64`, color `magenta`, the heading "Signal Transmitted", and the subtext "The message has entered the void." The confirmation view animates in from `{ opacity: 0, scale: 0.9 }` to `{ opacity: 1, scale: 1 }`. After 3 seconds, the form resets to idle.
 
 ## Mock vs Real Submission
 

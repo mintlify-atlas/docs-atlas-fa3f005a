@@ -1,14 +1,26 @@
 ---
-title: "SummoningCircle: Interactive Project Selector"
+title: "SummoningCircle: Rotating Animated Project Circle Selector"
 sidebarTitle: "SummoningCircle"
-description: "SummoningCircle is the interactive project list selector that drives ProjectPanel — clicking an item lifts state and updates the detail view."
+description: "SummoningCircle renders one animated circular button per project — rotating rings, rune sigil, and active/hover states that drive ProjectPanel selection."
 ---
 
-SummoningCircle is the interactive project list component on the Projects page. It displays all projects as selectable items — each showing the project title alongside a Sigil rune. Clicking an item selects it and updates the adjacent ProjectPanel with the full project details. Selection state is lifted to the parent component so both pieces stay in sync.
+SummoningCircle renders a single animated circular button representing one project. It displays the project title and a Sigil icon inside a set of concentric rotating rings — an outer dashed ring and an inner dotted ring — that spin continuously when the item is active. Clicking the circle fires the `onClick` callback, and the `isActive` prop toggles the selected visual state. One SummoningCircle is rendered per project; selection state is lifted to the parent.
+
+## Props
+
+<ParamField path="project" type="Project" required>
+  The project object to display inside the circle. The component reads `project.title` for the heading and `project.image` for the background texture, and passes `project.title` to the button's `aria-label`.
+</ParamField>
+
+<ParamField path="onClick" type="() => void" required>
+  Callback fired when the user clicks the circle. Wire this to your parent state setter to update the selected project and drive ProjectPanel.
+</ParamField>
+
+<ParamField path="isActive" type="boolean" required>
+  When `true`, the outer and inner rings animate to a full 360° rotation loop, borders shift to full neon-magenta and neon-purple, and the title inside the circle switches to `text-neon-magenta` with a glow. When `false`, borders are dimmed and rings are stationary.
+</ParamField>
 
 ## Usage
-
-SummoningCircle lifts selected state to a parent component. Pass the currently selected project's `id` as `selectedId` and wire `onSelect` to your state setter:
 
 ```jsx
 import { SummoningCircle } from './components/projects/SummoningCircle.js';
@@ -19,11 +31,16 @@ function ProjectsPage() {
 
   return (
     <div className="flex flex-col lg:flex-row gap-12">
-      <SummoningCircle
-        projects={projects}
-        selectedId={selected?.id}
-        onSelect={setSelected}
-      />
+      <div className="flex flex-wrap gap-8 justify-center">
+        {projects.map(project => (
+          <SummoningCircle
+            key={project.id}
+            project={project}
+            isActive={selected?.id === project.id}
+            onClick={() => setSelected(project)}
+          />
+        ))}
+      </div>
       <ProjectPanel project={selected} />
     </div>
   );
@@ -32,13 +49,13 @@ function ProjectsPage() {
 
 ## Interaction
 
-Each project item in the list has two interactive states:
+Each SummoningCircle has two interactive states:
 
-- **Hover** — A neon highlight appears when the cursor enters the item, giving visual feedback before selection.
-- **Selected** — The currently active item holds a persistent neon highlight. This state is driven by the `selectedId` prop, so it stays in sync even if selection is changed programmatically.
+- **Hover** — When `isActive` is `false`, hovering the circle scales it up via `hover:scale-105` and partially brightens the ring borders from their dimmed state.
+- **Active** — When `isActive` is `true`, the circle scales to `scale-105`, both rings animate into a continuous rotation loop (outer ring at 20s, inner ring at 15s in the opposite direction), borders glow at full neon intensity, and the Sigil color switches from purple to magenta.
 
-Clicking any item fires `onSelect` with the full project object, which the parent uses to update both `selectedId` (for SummoningCircle's highlight) and the `project` prop on ProjectPanel (for the detail view).
+The four cardinal rune icons around the outside of the circle also increase in opacity from `50%` to `100%` and gain a magenta drop-shadow glow when the circle is active.
 
 <Tip>
-  The first project in the data array is typically pre-selected on page load to avoid showing the empty ProjectPanel placeholder state on initial render. Pass `projects[0]` as the initial value to your `useState` call.
+  Pre-select the first project on page load by passing `projects[0]` as the initial value to your `useState` call. This avoids showing the empty ProjectPanel placeholder state on initial render.
 </Tip>

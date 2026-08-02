@@ -1,22 +1,28 @@
 ---
-title: "RitualReport: Case Study Document Renderer"
+title: "RitualReport: Case Study Full Document Renderer Component"
 sidebarTitle: "RitualReport"
-description: "RitualReport renders a full structured case study document — title, Sigil, and named sections as heading/prose blocks following the Ritual Report format."
+description: "RitualReport renders a full structured case study — title, Sigil, and named sections as heading/prose blocks, following the Ritual Report format."
 ---
 
-RitualReport renders a full case study document from a structured data object. It displays the case study title, a thematic Sigil, and then each named section as a heading + prose block — following the Ritual Report format used throughout the portfolio. Section headings are rendered in `font-display` with neon colors; section content uses `font-sans` for extended readability.
+RitualReport renders a full case study document from a structured data object. It displays the case study title, a thematic Sigil, and then each named section as a heading + prose block — following the Ritual Report format used throughout the portfolio. Section headings are rendered in `font-display` with neon colors; section content uses `font-sans` for extended readability. Each section animates into view via a scroll-triggered Framer Motion transition.
 
-## Case Study Object
+## Props
+
+<ParamField path="caseStudy" type="CaseStudy" required>
+  The case study data object to render. See the Case Study Object Shape section below.
+</ParamField>
+
+## Case Study Object Shape
 
 ```js
 {
   id: string,
-  title: string,            // e.g. 'RITUAL REPORT: NEXUS DASHBOARD REBUILD'
-  sigilId: string,          // Sigil ID for the header decoration
+  title: string,           // e.g. 'RITUAL REPORT: NEXUS DASHBOARD REBUILD'
+  sigilId: string,         // Sigil ID for the header decoration
   sections: [
     {
-      heading: string,      // e.g. 'Problem', 'Goal', 'Process'
-      content: string,      // Full prose paragraph
+      heading: string,     // e.g. 'Problem', 'Goal', 'Process'
+      content: string,     // Full prose paragraph
     }
   ]
 }
@@ -43,10 +49,14 @@ These eight headings make up the recommended full Ritual Report structure. Inclu
 import { RitualReport } from './components/case/RitualReport.js';
 import { caseStudies } from './data/caseStudies.js';
 
-{caseStudies.map(study => (
-  <RitualReport key={study.id} study={study} />
+{caseStudies.map(caseStudy => (
+  <RitualReport key={caseStudy.id} caseStudy={caseStudy} />
 ))}
 ```
+
+## Animation
+
+The header Sigil icon animates from `{ scale: 0.8, opacity: 0 }` to `{ scale: 1, opacity: 1 }` via `whileInView` with `once: true`. Each section block animates from `{ opacity: 0, y: 20 }` to `{ opacity: 1, y: 0 }` as it enters the viewport, with a `-100px` margin offset so the transition triggers slightly before the section is fully on screen.
 
 <Info>
   You do not need to use all eight standard sections. The `sections` array is rendered in order, so include only the headings that are relevant to your case study. A minimal entry might only have `Problem`, `Process`, and `Result`.

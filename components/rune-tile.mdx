@@ -1,21 +1,29 @@
 ---
-title: "RuneTile: Skill Display Tile with Mastery Badge"
+title: "RuneTile: Skill Display Tile with Mastery Level Badge"
 sidebarTitle: "RuneTile"
-description: "RuneTile renders an individual skill as an interactive bordered tile — Sigil glyph, skill name, mastery badge, category, and description on hover."
+description: "RuneTile renders an individual skill as an interactive tile — Sigil glyph, skill name, mastery badge, and description with a neon-lime hover glow."
 ---
 
-RuneTile renders a single skill as a bordered interactive tile — showing a Sigil glyph, the skill name, a mastery level badge, and a category label. On hover, the tile scales up slightly, its border shifts to a neon color, and a glow shadow appears. Skills are grouped by category and rendered in a responsive grid on the Skills page.
+RuneTile renders a single skill as a bordered interactive tile — showing a Sigil glyph, the skill name, a mastery level badge, and a short description. On hover, the tile's border brightens to neon-lime, a glow shadow appears, and the heading shifts to `text-neon-lime`. Skills are rendered in a responsive grid on the Skills page, with each tile stagger-animated into view as it enters the viewport.
 
-## Skill Object Props
+## Props
+
+<ParamField path="skill" type="Skill" required>
+  The skill data object to render. See the Skill Object Shape section below for required fields.
+</ParamField>
+
+<ParamField path="index" type="number" required>
+  The zero-based position of this tile in the skills array. Used to calculate the stagger delay for the scroll-triggered entrance animation (`delay: index * 0.05`).
+</ParamField>
+
+## Skill Object Shape
 
 | Field | Type | Description |
 |---|---|---|
-| `id` | `string` | Unique identifier used as the React key |
-| `name` | `string` | Display name shown on the tile (e.g. `"TypeScript"`) |
-| `category` | `string` | Grouping label — `Languages`, `Front-End`, `Back-End/Data`, `Debugging`, `Git/GitHub`, or `Design` |
-| `mastery` | `'Master' \| 'Adept'` | Proficiency tier — controls badge color |
-| `description` | `string` | One-line flavor text describing the skill |
 | `sigilId` | `string` | Sigil ID from `sigils.js` used to render the tile's glyph icon |
+| `mastery` | `'Master' \| 'Adept' \| 'Initiate'` | Proficiency tier — controls badge color |
+| `name` | `string` | Display name shown on the tile (e.g. `"TypeScript"`) |
+| `description` | `string` | One-line flavor text shown beneath the skill name |
 
 ## Usage
 
@@ -25,8 +33,8 @@ import { skills } from './data/skills.js';
 
 // Render all skills in a grid
 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-  {skills.map(skill => (
-    <RuneTile key={skill.id} skill={skill} />
+  {skills.map((skill, i) => (
+    <RuneTile key={skill.sigilId} skill={skill} index={i} />
   ))}
 </div>
 ```
@@ -35,11 +43,14 @@ import { skills } from './data/skills.js';
 
 | Level | Badge Color | Meaning |
 |---|---|---|
-| `Master` | Cyan | Highly proficient — used daily, comfortable with advanced patterns |
+| `Master` | Lime | Highly proficient — used daily, comfortable with advanced patterns |
 | `Adept` | Purple | Comfortable and productive — solid working knowledge |
+| `Initiate` | Cyan | Foundational familiarity — actively developing this skill |
 
-## Tips
+## Animation
+
+Each RuneTile uses Framer Motion's `whileInView` to fade and slide in from `{ opacity: 0, y: 20 }` to `{ opacity: 1, y: 0 }` once it enters the viewport. The viewport is configured with `once: true` so the animation fires only on first appearance. The `index` prop controls the stagger: `delay: index * 0.05`.
 
 <Tip>
-  Each skill entry references a `sigilId`. Use one of the `rune-1` through `rune-7` sigils for generic skill icons, or create a custom sigil path in `sigils.js` if you want a distinctive glyph for a specific technology.
+  Each skill entry references a `sigilId`. Use one of the `rune-1` through `rune-7` sigils for generic skill icons, or define a custom sigil path in `sigils.js` if you want a distinctive glyph for a specific technology.
 </Tip>

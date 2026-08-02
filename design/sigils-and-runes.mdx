@@ -1,10 +1,10 @@
 ---
 title: "Sigils and Runes: The SVG Glyph System"
 sidebarTitle: "Sigils & Runes"
-description: "A complete guide to Sys.Witch V2's SVG sigil library — 18 hand-crafted glyphs for navigation icons, skill badges, and decorative section markers."
+description: "A complete guide to Sys.Witch V2's SVG sigil library — 19 hand-crafted glyphs for navigation icons, skill badges, and decorative section markers."
 ---
 
-Sys.Witch V2 ships 18 hand-crafted SVG sigils used as navigation icons, decorative elements, skill badges, and section markers. Each sigil is a named path stored in `data/sigils.js` and rendered via the `Sigil` component. The collection is split into two groups: **navigation sigils** (one per major site section plus personality traits) and **runes** (seven abstract geometric glyphs used for decoration and skill indicators).
+Sys.Witch V2 ships 19 hand-crafted SVG sigils used as navigation icons, decorative elements, skill badges, and section markers. Each sigil is a named path stored in `data/sigils.js` and rendered via the `Sigil` component. The collection is split into two groups: **navigation sigils** (one per major site section plus personality traits) and **runes** (seven abstract geometric glyphs used for decoration and skill indicators).
 
 ---
 
@@ -36,14 +36,28 @@ Sys.Witch V2 ships 18 hand-crafted SVG sigils used as navigation icons, decorati
 
 ## Rendering a Sigil
 
-Import the `Sigil` component and pass it an `id` from the library above. The `size`, `color`, and `className` props are all optional.
+Import the `Sigil` component and pass it an `id` from the library above. The `size`, `color`, `animate`, and `className` props are all optional.
 
-| Prop | Type | Required | Description |
-|---|---|---|---|
-| `id` | `string` | Yes | Sigil ID from the library above |
-| `size` | `number` | No | Render size in pixels (default inferred from SVG viewBox) |
-| `color` | `string` | No | One of: `purple`, `magenta`, `cyan`, `lime` — maps to the matching neon color token |
-| `className` | `string` | No | Additional Tailwind or CSS classes applied to the SVG element |
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `id` | `string` | Yes | — | Sigil ID from the library above. Falls back to `rune-1` if the ID is not found. |
+| `size` | `number` | No | `24` | Render size in pixels; sets both `width` and `height` on the SVG element. |
+| `color` | `string` | No | `"purple"` | One of: `purple`, `magenta`, `cyan`, `lime`, `deep-purple` — maps to the matching neon color token. |
+| `animate` | `boolean` | No | `false` | When `true`, animates the path draw using Framer Motion (path-length reveal). |
+| `className` | `string` | No | `""` | Additional Tailwind or CSS classes applied to the SVG element. |
+
+### SVG Output Attributes
+
+The `Sigil` component renders a single `<svg>` element with these fixed attributes:
+
+| Attribute | Value |
+|---|---|
+| `viewBox` | `0 0 24 24` |
+| `fill` | `none` |
+| `stroke` | Neon color CSS variable (e.g. `var(--neon-purple)`) |
+| `strokeWidth` | `1.5` |
+| `strokeLinecap` | `round` |
+| `strokeLinejoin` | `round` |
 
 ### Code Examples
 
@@ -58,6 +72,9 @@ import { Sigil } from './components/sigils/Sigil.js';
 
 // Skill badge rune
 <Sigil id="rune-4" size={16} color="purple" />
+
+// Animated path-draw reveal
+<Sigil id="home" size={32} color="lime" animate />
 ```
 
 ---
@@ -100,5 +117,5 @@ Then reference it anywhere in the app:
 ```
 
 <Tip>
-  Sigil paths use a 24×24 viewBox coordinate space. Keep your custom path values within 0–24 on both axes for consistent sizing alongside the built-in library.
+  Sigil paths use a 24×24 viewBox coordinate space. Keep your custom path values within 0–24 on both axes for consistent sizing alongside the built-in library. If the `id` you pass does not exist in `data/sigils.js`, the component silently falls back to `rune-1`.
 </Tip>

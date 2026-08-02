@@ -1,7 +1,7 @@
 ---
-title: "ParticleField: Animated Canvas Background"
+title: "ParticleField: Fullscreen Animated Canvas Background"
 sidebarTitle: "ParticleField"
-description: "ParticleField is a fullscreen Canvas animation of neon particles drifting upward, with responsive particle counts, reduced-motion support, and automatic cleanup."
+description: "ParticleField renders a fullscreen Canvas of neon particles drifting upward, with responsive counts, reduced-motion support, and automatic cleanup."
 ---
 
 ParticleField renders a fullscreen `<canvas>` element pinned behind all page content. It continuously animates neon-colored particles drifting upward, creating the cyber-occult atmosphere that defines the site's visual identity. The canvas is fixed to the viewport with `inset-0`, sits at `z-0`, and carries `opacity-60` to keep the particles atmospheric rather than distracting.
@@ -29,7 +29,7 @@ ParticleField renders a fullscreen `<canvas>` element pinned behind all page con
 
 ## Accessibility
 
-ParticleField checks `window.matchMedia('(prefers-reduced-motion: reduce)')` on mount. If the user has enabled the reduced-motion preference in their OS or browser, the animation loop is skipped entirely — the canvas remains in the DOM (so layout is unaffected) but no particles are drawn or animated. This ensures the component does not cause discomfort for users sensitive to motion.
+ParticleField checks `window.matchMedia('(prefers-reduced-motion: reduce)')` on mount inside a `useEffect`. If the user has enabled the reduced-motion preference in their OS or browser, the animation loop is skipped entirely — the canvas remains in the DOM (so layout is unaffected) but no particles are drawn or animated. This ensures the component does not cause discomfort for users sensitive to motion.
 
 The canvas element itself carries `aria-hidden="true"`, so screen readers skip it entirely and it contributes nothing to the accessibility tree.
 

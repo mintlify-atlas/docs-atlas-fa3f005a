@@ -1,10 +1,10 @@
 ---
-title: "RuneDivider: Decorative Section Separator"
+title: "RuneDivider: Neon Sigil Decorative Section Separator"
 sidebarTitle: "RuneDivider"
-description: "RuneDivider is a decorative horizontal rule that centers a Sigil glyph between two neon-purple gradient lines, used to separate content sections thematically."
+description: "RuneDivider is a decorative horizontal rule that centers a Sigil glyph between two neon lines, used to separate content sections thematically."
 ---
 
-RuneDivider is a decorative horizontal rule that places a centered sigil glyph between two neon-tinted lines, used to visually separate content sections with thematic continuity. Rather than a plain `<hr>`, it reinforces the cyber-occult aesthetic at natural breakpoints in a page's content hierarchy.
+RuneDivider is a decorative horizontal rule that places three centered sigil glyphs between two neon-tinted lines, used to visually separate content sections with thematic continuity. Rather than a plain `<hr>`, it reinforces the cyber-occult aesthetic at natural breakpoints in a page's content hierarchy.
 
 ## Usage
 
@@ -27,18 +27,31 @@ import { RuneDivider } from './components/layout/RuneDivider.js';
 </section>
 ```
 
-RuneDivider takes no props and requires no configuration — place it wherever a visual pause between sections feels appropriate.
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `color` | `'purple' \| 'cyan' \| 'magenta' \| 'lime'` | `'purple'` | Controls the neon color of both the lines and the sigil glyphs. |
+| `className` | `string` | `''` | Additional Tailwind classes applied to the outer wrapper `div`. |
 
 ## Visual Appearance
 
-The component renders a full-width row containing three elements in a horizontal flex layout:
+The component renders a full-width flex row containing three elements:
 
-- **Left line** — a thin horizontal rule that fades from transparent on the left to `neon-purple` at the center, created with a CSS gradient.
-- **Center Sigil** — a single glyph from the Sigil set, rendered in the `neon-purple` color scheme with a subtle glow effect.
-- **Right line** — a mirror of the left line, fading from `neon-purple` back to transparent on the right.
+- **Left line** — a thin horizontal rule (`h-[1px]`, `max-w-[100px]`) in the active neon color at `opacity-50`, with a matching glow shadow.
+- **Center Sigils** — three Sigil glyphs (`rune-1`, `rune-3`, `rune-2`) rendered side by side. The outer two (`rune-1` and `rune-2`) are shown at `opacity-70`; the center glyph (`rune-3`) is shown at full opacity. All three use the component's active color.
+- **Right line** — a mirror of the left line.
 
 The result is a symmetrical decorative accent that draws the eye to the center before guiding it down to the next section.
 
+To change the color for a specific instance, pass the `color` prop:
+
+```jsx
+<RuneDivider color="cyan" />
+<RuneDivider color="magenta" />
+<RuneDivider color="lime" />
+```
+
 <Note>
-  RuneDivider accepts no props — it is a fixed decorative element. To vary the sigil or color, edit the component source directly at `components/layout/RuneDivider.js`.
+  To change which sigil glyphs are used, edit the component source directly at `components/layout/RuneDivider.js`. The `rune-1`, `rune-3`, and `rune-2` IDs refer to entries in `data/sigils.js`.
 </Note>

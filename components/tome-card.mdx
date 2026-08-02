@@ -1,21 +1,46 @@
 ---
-title: "TomeCard: Writing Entry Card Component"
+title: "TomeCard: Writing Entry Card with Channel Badge Component"
 sidebarTitle: "TomeCard"
 description: "TomeCard renders a single writing entry as a card — post title, excerpt, formatted publication date, and a channel/category badge with an outbound link."
 ---
 
-TomeCard renders a single writing entry as a card — showing the post title, excerpt, formatted publication date, and a channel/category badge. All entries link out to the full post via the `url` field. The date and channel label are rendered in `font-mono`, while the excerpt uses `font-sans` for readability.
+TomeCard renders a single writing entry as a card — showing the post title, excerpt, formatted publication date, and a channel/category badge. Cards lift slightly on hover with a neon-purple glow on the left border. The date and channel label are rendered in `font-mono`, while the excerpt uses `font-sans` for readability. An "Invoke Text" link button at the bottom of each card links out to the full post.
 
-## Writing Entry Object
+## Props
+
+<ParamField path="article" type="Article" required>
+  The writing entry object to display. See the Article Object Shape section below for required fields.
+</ParamField>
+
+<ParamField path="index" type="number" required>
+  The zero-based position of this card in the articles array. Used to calculate the stagger delay for the scroll-triggered entrance animation (`delay: index * 0.1`).
+</ParamField>
+
+## Article Object Shape
 
 | Field | Type | Description |
 |---|---|---|
-| `id` | `string` | Unique identifier used as the React key |
+| `channel` | `string` | Category label rendered in the top-left badge (e.g. `"Technical"`, `"Reflections"`) |
+| `date` | `string` | Publication date rendered in the top-right corner |
 | `title` | `string` | Display title of the post |
 | `excerpt` | `string` | One-sentence summary shown in the card body |
-| `date` | `string` | Publication date in `YYYY-MM-DD` format |
-| `channel` | `string` | Category label — see Channel Values below |
-| `url` | `string` | Link to the full post (external URL or `#` for placeholder) |
+
+## Usage
+
+```jsx
+import { TomeCard } from './components/writing/TomeCard.js';
+import { writing } from './data/writing.js';
+
+<div className="space-y-6">
+  {writing.map((article, i) => (
+    <TomeCard key={article.title} article={article} index={i} />
+  ))}
+</div>
+```
+
+## Animation
+
+Each TomeCard uses Framer Motion's `whileInView` to fade and rise from `{ opacity: 0, y: 30 }` to `{ opacity: 1, y: 0 }` once it enters the viewport. The viewport is configured with `once: true` so the animation fires only on first appearance. The `index` prop controls the stagger: `delay: index * 0.1`.
 
 ## Channel Values
 
@@ -27,19 +52,6 @@ TomeCard renders a single writing entry as a card — showing the post title, ex
 | `Project Writeups` | Architecture overviews and build logs |
 | `General Audience` | Accessible explainers written for non-technical readers |
 
-## Usage
-
-```jsx
-import { TomeCard } from './components/writing/TomeCard.js';
-import { writing } from './data/writing.js';
-
-<div className="space-y-6">
-  {writing.map(entry => (
-    <TomeCard key={entry.id} entry={entry} />
-  ))}
-</div>
-```
-
 <Tip>
-  The `url` field accepts any URL. Point it to your actual blog posts on dev.to, Medium, a personal site, or any other platform. Use `"#"` as a placeholder while drafts are still in progress.
+  The channel value is rendered verbatim as a badge label — use consistent capitalization across all entries so the badge style looks uniform across the Writing page.
 </Tip>

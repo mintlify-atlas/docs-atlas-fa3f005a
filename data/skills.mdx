@@ -1,10 +1,10 @@
 ---
-title: "Skills Data Schema and Technology Categories"
+title: "Sys.Witch V2 Skills Data: Schema and Technology Categories"
 sidebarTitle: "Skills"
 description: "Reference for data/skills.js — covers the full field schema, available mastery levels, category groupings, and how to customize your skill set."
 ---
 
-The skills data file powers the Skills section of the portfolio. Each entry in the exported `s` array renders as a **RuneTile** — a card composed of a Sigil icon, a mastery badge, the skill name, and a short line of flavor text.
+The skills data file powers the Skills section of the portfolio. Each entry in the exported `skills` array renders as a **RuneTile** — a card composed of a Sigil icon, a mastery badge, the skill name, and a short line of flavor text.
 
 ## Schema
 
@@ -89,7 +89,6 @@ export const skills = [
     description: 'Timeline manipulation and alternate reality branching.', sigilId: 'rune-4' },
   { id: 'figma', name: 'Figma', category: 'Design', mastery: 'Adept',
     description: 'Vector manipulation and interface pre-visualization.', sigilId: 'rune-5' },
-  // ... add your skills
 ];
 ```
 

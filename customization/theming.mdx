@@ -26,17 +26,18 @@ All color tokens are declared as CSS custom properties on `:root` inside `assets
 }
 ```
 
-Replace any value to shift the palette. Here is a **deep blue / electric teal** variant as an example:
+Replace any value to shift the palette. The following is a **deep blue / electric teal** variant shown as an example — these are not the project's default values:
 
 ```css
+/* EXAMPLE ONLY — alternative palette, not the default */
 :root {
   --bg-base: #020510;
   --bg-surface: #040a1e;
   --bg-surface-elevated: #091234;
-  --neon-purple: #2563eb;   /* electric blue */
-  --neon-magenta: #06b6d4; /* teal */
-  --neon-cyan: #22d3ee;    /* light cyan */
-  --neon-lime: #34d399;    /* emerald */
+  --neon-purple: #2563eb;      /* electric blue */
+  --neon-magenta: #06b6d4;    /* teal */
+  --neon-cyan: #22d3ee;       /* light cyan */
+  --neon-lime: #34d399;       /* emerald */
   --neon-deep-purple: #1d4ed8;
 }
 ```
@@ -67,11 +68,12 @@ The four typefaces are loaded via a single Google Fonts `@import` at the top of 
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Tektur:wght@400;500;600;700;800;900&display=swap');
 ```
 
-| Utility class  | Default font     | Role                       |
-| -------------- | ---------------- | -------------------------- |
-| `font-display` | Tektur           | Headings, callouts, labels |
-| `font-mono`    | JetBrains Mono   | Code, terminal, tags       |
-| `font-sans`    | Inter            | Body copy, UI text         |
+| Utility class  | Default font     | Role                                        |
+| -------------- | ---------------- | ------------------------------------------- |
+| `font-display` | Tektur           | Headings, callouts, labels                  |
+| `font-mono`    | JetBrains Mono   | Code, terminal, tags                        |
+| `font-sans`    | Inter            | Body copy, UI text                          |
+| *(inline)*     | Audiowide        | Decorative accent spans (no utility class)  |
 
 To swap a typeface, replace the family name in the `@import` URL, then update the corresponding utility class definition:
 
@@ -82,7 +84,7 @@ To swap a typeface, replace the family name in the `@import` URL, then update th
 .font-sans    { font-family: 'YourBodyFont', sans-serif; }
 ```
 
-Audiowide is used in a small number of decorative accent spans. If you remove it from the import, replace those instances with `font-display` to avoid a font-stack fallback.
+Audiowide is used in a small number of decorative accent spans and does not have a dedicated utility class. If you remove it from the import, locate those spans in the component source and replace them with `font-display` to avoid a font-stack fallback.
 
 ## Scrollbar Styling
 

@@ -1,5 +1,5 @@
 ---
-title: "Layout Component: App Shell and Page Structure"
+title: "Layout: Root App Shell and Animated Page Structure"
 sidebarTitle: "Layout"
 description: "Layout is the root app shell that combines ParticleField, PortalNav, animated page transitions, and the footer into a unified page structure."
 ---
@@ -12,12 +12,14 @@ Layout operates in two distinct modes depending on the current route.
 
 **Home route (`/`)** — PortalNav and footer are hidden. ParticleField fills the screen behind the page content, and the main area carries no top or bottom padding. This allows the homepage to occupy the full viewport with an uninterrupted fullscreen presentation.
 
-**All other routes** — PortalNav is visible as a sticky top bar, the main content area receives `pt-24 pb-16` padding to clear the nav and breathe at the bottom, and the footer appears below the page content. Layout detects the current route using React Router's `useLocation()` hook and toggles these elements accordingly.
+**All other routes** — PortalNav is visible as a fixed top bar, the main content area receives `pt-24 pb-16` padding to clear the nav and breathe at the bottom, and the footer appears below the page content. Layout detects the current route using React Router's `useLocation()` hook and toggles these elements accordingly.
+
+Layout itself is just a component — it does not call `createBrowserRouter`. You register it as the root `element` in your React Router configuration, and it renders child routes via `<Outlet>`. The example below shows how that router setup looks:
 
 ```jsx
+// In main.jsx (or wherever your router is defined) — not inside Layout.js itself
 import { Layout } from './components/layout/Layout.js';
 
-// React Router v6 route config
 const router = createBrowserRouter([
   {
     path: '/',
@@ -60,6 +62,12 @@ The `mode="wait"` setting is key — without it, both the entering and exiting p
 ## Footer
 
 The footer renders below the main content area on all routes except the home route. It displays a monospace copyright notice in `text-xs text-text-muted`, separated from the page content by a `border-t border-neon-purple/20` rule. The footer background is `bg-surface/50` with `backdrop-blur-sm`, matching the translucent layering style used throughout the template.
+
+The footer text reads:
+
+```
+© [year] // SYS.WITCH // NO ACTUAL SPELLS, JUST SUSPICIOUSLY ORGANIZED FILES. // SYS.WITCH // NO ACTUAL SPELLS, JUST SUSPICIOUSLY ORGANIZED FILES.
+```
 
 <Note>
   The footer renders on all routes except the home route (`/`). To customize the footer text, edit the JSX inside the Layout component directly.

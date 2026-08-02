@@ -1,19 +1,19 @@
 ---
-title: "GlowFrame: Neon-Bordered Card Container"
+title: "GlowFrame: Neon Glow-Bordered Card Container Component"
 sidebarTitle: "GlowFrame"
-description: "GlowFrame is the primary card container in Sys.Witch V2, wrapping content in a neon-bordered panel with a matching color glow box-shadow effect."
+description: "GlowFrame is the primary card container in Sys.Witch V2, wrapping content in a neon-bordered panel with corner accents and a matching color glow shadow."
 ---
 
-GlowFrame is the primary card container for Sys.Witch V2. It wraps content in a bordered panel with a neon-colored border and matching box-shadow glow, providing the signature "glowing panel" aesthetic used throughout the site.
+GlowFrame is the primary card container for Sys.Witch V2. It wraps content in a bordered panel with a neon-colored border, corner accent marks, and a matching box-shadow glow. When the `animate` prop is enabled, the component upgrades to a Framer Motion element that fades and slides in from below as it enters the viewport — used to give focal panels a polished entrance.
 
 ## Props
 
 <ParamField path="color" type="'purple' | 'magenta' | 'cyan' | 'lime'">
-  Controls the border color, glow shadow color, and (when `animate=true`) pulse animation color. Defaults to `purple`.
+  Controls the border color and glow shadow color of the frame. Defaults to `purple`.
 </ParamField>
 
 <ParamField path="animate" type="boolean">
-  When `true`, adds a continuous pulse-glow animation that slowly cycles the glow opacity. Used on the contact form for extra visual emphasis.
+  When `true`, replaces the root `<div>` with a Framer Motion `motion.div` that animates from `opacity: 0, y: 20` to `opacity: 1, y: 0` once the element enters the viewport. The animation runs once (`viewport: { once: true }`) with a 0.5 s ease transition. Defaults to `false`.
 </ParamField>
 
 <ParamField path="className" type="string">
@@ -35,7 +35,7 @@ import { GlowFrame } from './components/ui/GlowFrame.js';
   <p>Content inside a glowing cyan panel.</p>
 </GlowFrame>
 
-// Animated glow (used for contact form)
+// Viewport-entrance animation (used for contact form)
 <GlowFrame color="magenta" animate className="max-w-2xl mx-auto">
   <SummoningForm />
 </GlowFrame>
@@ -56,5 +56,5 @@ import { GlowFrame } from './components/ui/GlowFrame.js';
 | `lime` | `border-neon-lime` | `shadow-glow-lime` |
 
 <Tip>
-  GlowFrame uses `bg-surface-elevated` (`#12101c`) as its background by default, which sits one step above the page background. The `animate` prop is best reserved for focal elements — overusing it dilutes the visual impact.
+  GlowFrame uses `bg-surface-elevated/50` with `backdrop-blur-sm` as its background by default, sitting one step above the page background with a subtle blur. The `animate` prop is best reserved for focal elements — overusing it dilutes the visual impact.
 </Tip>

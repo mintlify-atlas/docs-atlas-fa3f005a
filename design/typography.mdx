@@ -16,6 +16,10 @@ Sys.Witch V2 uses a deliberately stratified three-font system. **Tektur** (`font
 | Inter | `font-sans` | `Inter, sans-serif` | 300–700 | Body text, descriptions, prose |
 | JetBrains Mono | `font-mono` | `JetBrains Mono, monospace` | 400–700 | Code labels, timestamps, technical identifiers, form labels |
 
+<Note>
+  **Audiowide** is also loaded via the same Google Fonts `@import` in `main.css`, but it is not assigned a Tailwind utility class. If you need it, apply it directly with a custom CSS class: `font-family: 'Audiowide', cursive;`.
+</Note>
+
 ### Usage Examples
 
 ```jsx
@@ -86,5 +90,5 @@ These classes cover the full range of text treatments from semantic hierarchy to
 ---
 
 <Note>
-  Google Fonts loads all four font families (Audiowide is also imported for optional use) via `@import` in `main.css`. In production builds this request is deferred but present — ensure your deployment environment allows outbound network access to `fonts.googleapis.com`.
+  Google Fonts loads all font families via `@import` in `main.css`. In production builds this request is deferred but present — ensure your deployment environment allows outbound network access to `fonts.googleapis.com`.
 </Note>

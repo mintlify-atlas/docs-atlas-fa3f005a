@@ -1,5 +1,5 @@
 ---
-title: "Case Studies Data Schema and Ritual Report Format"
+title: "Sys.Witch V2 Case Studies: Schema and Ritual Report Format"
 sidebarTitle: "Case Studies"
 description: "Reference for data/caseStudies.js — covers the Ritual Report section format, recommended narrative sequence, and the two placeholder case studies."
 ---
@@ -8,7 +8,7 @@ The caseStudies data file powers the Tomes page, rendering each entry as a full 
 
 ## Schema
 
-Each object in the exported `c` array has the following top-level fields:
+Each object in the exported `caseStudies` array has the following top-level fields:
 
 | Field | Type | Required | Description |
 |---|---|---|---|
@@ -68,12 +68,12 @@ export const caseStudies = [
       {
         heading: 'Problem',
         content:
-          'The legacy dashboard suffered severe performance degradation when rendering more than 500 data points. The DOM was bloated, and React was struggling to reconcile the massive component tree during real-time updates.',
+          'The legacy dashboard was suffering from severe performance degradation when rendering more than 500 data points. The DOM was bloated, and React was struggling to reconcile the massive component tree during real-time updates.',
       },
       {
         heading: 'Result',
         content:
-          'Achieved stable 60fps rendering 15,000 data points. Payload size decreased by 40%, time-to-interactive improved by 2.5 seconds.',
+          'Achieved a stable 60fps rendering 15,000 data points. The payload size decreased by 40%, and the time-to-interactive improved by 2.5 seconds.',
       },
       // ... additional sections
     ],

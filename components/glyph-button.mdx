@@ -1,31 +1,38 @@
 ---
-title: "GlyphButton: Terminal-Style Action Button"
+title: "GlyphButton: Terminal-Style Neon Action React Button"
 sidebarTitle: "GlyphButton"
-description: "GlyphButton provides solid and outline variants across four neon colors, styled in uppercase monospace for a terminal-aesthetic interactive element."
+description: "GlyphButton provides solid, outline, and ghost variants across four neon colors, styled in uppercase monospace for a terminal-aesthetic button."
 ---
 
-GlyphButton is the site's primary interactive element — a styled button using JetBrains Mono in uppercase with wide letter-spacing, available in solid (filled) and outline variants across all four neon colors.
+GlyphButton is the site's primary interactive element — a styled button using JetBrains Mono in uppercase with wide letter-spacing, available in `solid`, `outline`, and `ghost` variants across all four neon colors. It optionally renders a Sigil icon alongside the label using the `sigilId` prop.
 
 ## Props
 
 <ParamField path="color" type="'purple' | 'magenta' | 'cyan' | 'lime'" required>
-  Sets the neon color for the button's fill (solid) or border and text (outline).
+  Sets the neon color for the button's fill (solid) or border and text (outline/ghost).
 </ParamField>
 
-<ParamField path="variant" type="'solid' | 'outline'" required>
-  Controls the button's visual style. `solid` fills the background with the neon color and sets the text to `--bg-base` for contrast. `outline` uses a transparent background with a neon-colored border and matching neon text.
+<ParamField path="variant" type="'solid' | 'outline' | 'ghost'" required>
+  Controls the button's visual style:
+  - `solid` — fills the background at 20% neon opacity at rest and transitions to full neon fill on hover, setting the text to `--bg-base` for contrast.
+  - `outline` — transparent background with a 50%-opacity neon border and matching neon text; border and a light neon background tint appear on hover.
+  - `ghost` — no border, neon-colored text only; adds a subtle neon background tint on hover.
+</ParamField>
+
+<ParamField path="sigilId" type="string">
+  When provided, renders a `<Sigil>` icon at size `18` before the button label, using the same `color` as the button. In `solid` variant, the sigil stroke transitions to `--bg-base` on hover to match the label color.
 </ParamField>
 
 <ParamField path="fullWidth" type="boolean">
-  Adds `w-full` to the button, causing it to span 100% of its container width.
+  Adds `w-full` to the button, causing it to span 100% of its container width. Defaults to `false`.
 </ParamField>
 
 <ParamField path="type" type="string">
-  The HTML `type` attribute for the underlying `<button>` element. Accepts `'button'`, `'submit'`, or `'reset'`. Defaults to `'button'`.
+  The HTML `type` attribute for the underlying `<button>` element. Accepts `'button'`, `'submit'`, or `'reset'`. Defaults to the browser default (`'submit'` inside a `<form>`, `'button'` otherwise).
 </ParamField>
 
 <ParamField path="disabled" type="boolean">
-  Disables the button, preventing interaction and reducing its opacity to signal the inactive state.
+  Disables the button, preventing interaction. Passed directly to the underlying `<button>` element, which applies the browser's default disabled styling.
 </ParamField>
 
 <ParamField path="onClick" type="function">
@@ -55,6 +62,16 @@ import { GlyphButton } from './components/ui/GlyphButton.js';
   Reveal Source
 </GlyphButton>
 
+// Ghost variant — tertiary / low-emphasis action
+<GlyphButton color="cyan" variant="ghost">
+  Dismiss
+</GlyphButton>
+
+// With sigil icon
+<GlyphButton color="lime" variant="solid" sigilId="projects">
+  View Projects
+</GlyphButton>
+
 // Submit button for form
 <GlyphButton type="submit" color="magenta" variant="solid" fullWidth disabled={isSubmitting}>
   {isSubmitting ? 'Channeling...' : 'Send The Signal'}
@@ -68,12 +85,12 @@ import { GlyphButton } from './components/ui/GlyphButton.js';
 
 ## Hover State
 
-On hover, GlyphButton applies a `scale-105` transform and intensifies the `shadow-glow-*` shadow for the active color. This provides tactile, responsive feedback that reinforces the neon aesthetic without requiring additional markup.
+On hover, GlyphButton intensifies the `shadow-glow-*` shadow for the active color and transitions the border and background to their full neon values. The solid variant fills to the full neon color and inverts the text to `--bg-base`. A subtle scan-line overlay animates across the button face using a CSS keyframe animation.
 
 ## Disabled State
 
-When `disabled` is `true`, the button becomes non-interactive — pointer events are suppressed and the element renders at reduced opacity. This is used in form contexts (e.g., SummoningForm) while an async submission is in flight, preventing duplicate submissions.
+When `disabled` is `true`, the button becomes non-interactive — pointer events are suppressed and the element renders at reduced opacity via the browser's native disabled styling. This is used in form contexts (e.g., SummoningForm) while an async submission is in flight, preventing duplicate submissions.
 
 <Tip>
-  Follow the project convention: use `solid` for the primary or most important action in a given context, and `outline` for secondary actions. Mixing too many solid buttons in one area creates visual noise.
+  Follow the project convention: use `solid` for the primary or most important action in a given context, `outline` for secondary actions, and `ghost` for low-emphasis or dismissal actions. Mixing too many solid buttons in one area creates visual noise.
 </Tip>

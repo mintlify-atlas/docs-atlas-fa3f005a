@@ -1,7 +1,7 @@
 ---
-title: "TimelineEntry: Animated Background Timeline Row"
+title: "TimelineEntry: Animated About Page Timeline Row Component"
 sidebarTitle: "TimelineEntry"
-description: "TimelineEntry renders an animated timeline row for the About page — year marker, heading, and description with a scroll-triggered neon-cyan slide animation."
+description: "TimelineEntry renders a timeline row for the About page — year, heading, and description with a scroll-triggered neon-cyan slide-in animation."
 ---
 
 TimelineEntry renders a single row in the About page's background timeline — a year marker, heading, and description arranged in a vertical timeline layout with an animated neon-cyan connector line. Each entry slides into view from the right as the user scrolls it into the viewport, and the entries animate independently of one another.
@@ -26,7 +26,7 @@ TimelineEntry renders a single row in the About page's background timeline — a
 
 ## Animation
 
-Each TimelineEntry uses Framer Motion's `whileInView` to slide from `x: 20` to `x: 0` once the entry crosses the viewport threshold. The viewport is configured with `once: true` (animates only on first appearance) and a `-100px` margin offset so the animation triggers slightly before the entry fully enters the screen. Entries animate independently — they are not staggered.
+Each TimelineEntry uses Framer Motion's `whileInView` to slide from `{ opacity: 0, x: 20 }` to `{ opacity: 1, x: 0 }` once the entry crosses the viewport threshold. The viewport is configured with `once: true` (animates only on first appearance) and a `margin: "-100px"` offset so the animation triggers slightly before the entry fully enters the screen. Entries animate independently — they are not staggered.
 
 ## Usage
 
@@ -36,7 +36,7 @@ import { TimelineEntry } from './components/about/TimelineEntry.js';
 const timelineData = [
   { year: '2020', title: 'Started Learning Web Dev', description: 'Began with HTML/CSS fundamentals...' },
   { year: '2021', title: 'First React Project', description: 'Built a task management app...' },
-  { year: '2023', title: 'Current', description: 'Frontend developer focused on...', isLast: true },
+  { year: '2023', title: 'Current', description: 'Frontend developer focused on...' },
 ];
 
 {timelineData.map((entry, i) => (

@@ -1,47 +1,65 @@
 ---
-title: "Sigil: SVG Glyph Renderer"
+title: "Sigil: Animated SVG Glyph Renderer for Sys.Witch V2"
 sidebarTitle: "Sigil"
-description: "Sigil renders stroked SVG icons by looking up path data from the sigil library by ID, with four neon color options and flexible px sizing."
+description: "Sigil renders stroked SVG path icons by ID with five neon color options, configurable pixel sizing, and an optional self-drawing animation."
 ---
 
-Sigil is the core primitive for all iconography in Sys.Witch V2. It looks up a path string from the sigil library by ID and renders it as a stroked SVG, supporting four neon color options and arbitrary sizing.
+Sigil is the core primitive for all iconography in Sys.Witch V2. It looks up a path string from the sigil library by `id` and renders it as a stroked SVG with configurable size and neon color. When `animate` is enabled, the path draws itself in using a Framer Motion `pathLength` transition, producing a handwritten-glyph entrance effect.
 
 ## Props
 
 <ParamField path="id" type="string" required>
-  The sigil identifier used to look up the corresponding path string in `data/sigils.js`. See the [Sigils & Runes](/design/sigils-and-runes) page for the complete list of available IDs.
+  The sigil identifier used to look up the corresponding path string in `data/sigils.js`. Falls back to `rune-1` if the ID is not found. See the [Sigils & Runes](/design/sigils-and-runes) page for the complete list of available IDs.
 </ParamField>
 
 <ParamField path="size" type="number">
-  The rendered `width` and `height` of the SVG element in pixels. The SVG uses a fixed `24×24` viewBox, so `size` scales proportionally. Typical values:
+  The rendered `width` and `height` of the SVG element in pixels. The SVG uses a fixed `24×24` viewBox, so `size` scales proportionally. Defaults to `24`. Typical values:
 
   | Value | Context |
   |---|---|
   | `12` | Inline / form field label |
   | `16` | Small badge |
-  | `24` | Navigation icon |
+  | `18` | GlyphButton icon |
+  | `24` | Navigation icon (default) |
   | `32` | Feature tile |
   | `48` | Decorative element |
   | `64` | Hero / large display |
 </ParamField>
 
-<ParamField path="color" type="'purple' | 'magenta' | 'cyan' | 'lime'">
-  Maps to the corresponding neon CSS variable, which is applied as the SVG `stroke` color.
+<ParamField path="color" type="'purple' | 'cyan' | 'magenta' | 'lime' | 'deep-purple'">
+  Maps to the corresponding neon CSS variable applied as the `stroke` color on the path. Defaults to `purple`.
+
+  | Value | CSS Variable |
+  |---|---|
+  | `purple` | `var(--neon-purple)` |
+  | `cyan` | `var(--neon-cyan)` |
+  | `magenta` | `var(--neon-magenta)` |
+  | `lime` | `var(--neon-lime)` |
+  | `deep-purple` | `var(--neon-deep-purple)` |
+</ParamField>
+
+<ParamField path="animate" type="boolean">
+  When `true`, replaces the static `<path>` with a Framer Motion `motion.path` that animates `pathLength` from `0` to `1` and `opacity` from `0` to `1` over 2 s with an ease-in-out transition, producing a self-drawing glyph effect. Defaults to `false`.
 </ParamField>
 
 <ParamField path="className" type="string">
-  Additional classes applied to the `<svg>` element. Useful for adding glow or drop-shadow utilities (`drop-shadow-glow-magenta`), transition effects, or positioning helpers.
+  Additional classes applied to the `<svg>` element. Useful for transition effects, rotation, or positioning helpers. Note that drop-shadow glow classes (`drop-shadow-glow-*`) are applied automatically based on `color` and do not need to be added manually.
 </ParamField>
 
 ## SVG Attributes
 
-The following attributes are applied to every rendered `<svg>` element and are not configurable via props:
+The following attributes are set on the rendered `<svg>` element and are not configurable via props:
 
 | Attribute | Value |
 |---|---|
 | `viewBox` | `0 0 24 24` |
 | `fill` | `none` |
-| `stroke` | Mapped neon color variable (e.g., `var(--neon-magenta)`) |
+
+The following stroke attributes are applied to the inner `<path>` element:
+
+| Attribute | Value |
+|---|---|
+| `stroke` | Neon CSS variable for the active `color` (e.g., `var(--neon-magenta)`) |
 | `strokeWidth` | `1.5` |
 | `strokeLinecap` | `round` |
 | `strokeLinejoin` | `round` |
@@ -58,10 +76,13 @@ import { Sigil } from './components/sigils/Sigil.js';
 <Sigil id="skills" size={32} color="lime" className="mb-4" />
 
 // Hero/decorative element
-<Sigil id="case-studies" size={48} color="magenta" className="mx-auto drop-shadow-glow-magenta" />
+<Sigil id="case-studies" size={48} color="magenta" className="mx-auto" />
 
 // Small form field label icon
 <Sigil id="rune-1" size={12} color="magenta" />
+
+// Self-drawing entrance animation
+<Sigil id="about" size={48} color="purple" animate />
 
 // Animated on group hover
 <div className="group">

@@ -1,24 +1,24 @@
 ---
-title: "PortalNav: Sticky Navigation Bar with Sigil Icons"
+title: "PortalNav: Sticky Top Nav Bar with Neon Sigil Icons"
 sidebarTitle: "PortalNav"
 description: "PortalNav is the sticky top nav bar featuring Sigil icons, per-section neon colors, a mobile hamburger drawer, and active-route highlighting via NavLink."
 ---
 
-PortalNav renders the site's sticky top navigation bar, featuring a Sigil icon and text label for each route. On mobile it collapses into a hamburger drawer; on desktop it expands to a horizontal flex row with backdrop blur. It sits at `z-50` with a `bg-surface/50 backdrop-blur-xl` background, keeping the nav readable over both the ParticleField and any page content that scrolls beneath it.
+PortalNav renders the site's navigation bar, featuring a Sigil icon and text label for each route. On mobile it collapses into a hamburger drawer; on desktop it expands to a horizontal flex row with backdrop blur. It sits at `z-40` with a `bg-surface/80 backdrop-blur-md` background on desktop, keeping the nav readable over both the ParticleField and any page content that scrolls beneath it.
 
 ## Navigation Items
 
-Each route in the template is represented by a nav item with its own Sigil glyph and neon accent color. The table below lists the full set of built-in items:
+Each route in the template is represented by a nav item with its own Sigil glyph and neon accent color. The table below lists the full set of built-in items as defined in the `navItems` array inside `PortalNav.js`:
 
 | Route | Label | Sigil ID | Color |
 |---|---|---|---|
-| `/` | Home | `home` | cyan |
-| `/about` | About | `about` | purple |
-| `/projects` | Projects | `projects` | magenta |
-| `/skills` | Skills | `skills` | lime |
-| `/writing` | Writing | `writing` | cyan |
-| `/casestudies` | Tomes | `case-studies` | purple |
-| `/contact` | Contact | `contact` | magenta |
+| `/` | Portal | `home` | purple |
+| `/about` | Origin | `about` | cyan |
+| `/projects` | Conjured Works | `projects` | magenta |
+| `/skills` | Arcana | `skills` | lime |
+| `/writing` | Tomes | `writing` | purple |
+| `/case-studies` | Ritual Reports | `case-studies` | cyan |
+| `/contact` | Cast Message | `contact` | magenta |
 
 ## Active State
 
@@ -26,7 +26,7 @@ PortalNav uses React Router's `<NavLink>` component for each route. NavLink auto
 
 ## Mobile Behavior
 
-On small screens, the horizontal nav row is hidden and replaced with a hamburger menu button. Tapping the button toggles a drawer that slides down from the top using a CSS `translate-y` transition (`translate-y-0` when open, `translate-y-full` when closed). Inside the drawer, each nav item renders as a full-width row with the Sigil icon on the left and the label text on the right, making tap targets comfortable on touch devices.
+On small screens, the horizontal nav row is hidden and replaced with a hamburger menu button (`fixed top-4 right-4 z-50`). Tapping the button toggles a fullscreen overlay. When closed, the nav is translated off the top of the viewport using `-translate-y-full`; when open, it snaps back to `translate-y-0` and expands to cover the full screen (`inset-0`) with a `bg-base/95 backdrop-blur-xl` background. Inside the open drawer, each nav item renders as a full-width row with the Sigil icon on the left and the label text on the right, making tap targets comfortable on touch devices.
 
 ## Customizing Nav Items
 
@@ -35,10 +35,10 @@ To add or remove a route from the navigation, edit the `navItems` array inside `
 ```jsx
 // Inside PortalNav.js — add a new nav item to the navItems array
 const navItems = [
-  { path: '/', label: 'HOME', sigilId: 'home', color: 'cyan' },
-  { path: '/about', label: 'ABOUT', sigilId: 'about', color: 'purple' },
+  { path: '/', label: 'Portal', sigilId: 'home', color: 'purple' },
+  { path: '/about', label: 'Origin', sigilId: 'about', color: 'cyan' },
   // Add your new route:
-  { path: '/gallery', label: 'GALLERY', sigilId: 'rune-5', color: 'lime' },
+  { path: '/gallery', label: 'Gallery', sigilId: 'rune-5', color: 'lime' },
   // ...
 ];
 ```
